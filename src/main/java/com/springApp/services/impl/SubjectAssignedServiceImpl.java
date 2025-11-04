@@ -4,7 +4,6 @@ import com.springApp.dtos.*;
 import com.springApp.entity.*;
 import com.springApp.exception.*;
 import com.springApp.mapper.SubjectAssignedMapper;
-import com.springApp.mapper.UserMapper;
 import com.springApp.repositories.*;
 import com.springApp.services.SubjectAssignedService;
 import jakarta.transaction.Transactional;

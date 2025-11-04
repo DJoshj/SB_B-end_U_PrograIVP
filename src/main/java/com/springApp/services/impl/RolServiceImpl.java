@@ -62,7 +62,7 @@ public class RolServiceImpl implements RolService {
     public void deleteRol(Long idRol) {
         Optional<RolEntity> existingRol = rolRepository.findById(idRol);
 
-        if(!existingRol.isPresent()){
+        if(existingRol.isEmpty()){
             throw new ResourceNotFoundException("Rol not found to delete.");
         }
         rolRepository.deleteById(idRol);

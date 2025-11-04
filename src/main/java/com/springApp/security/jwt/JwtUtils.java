@@ -1,7 +1,6 @@
 package com.springApp.security.jwt;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
@@ -29,10 +28,10 @@ public class JwtUtils {
         Instant expiration = now.plusMillis(timeExpiration);
 
         return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(Date.from(now))
-                .setExpiration(Date.from(expiration))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .subject(username)
+                .issuedAt(Date.from(now))
+                .expiration(Date.from(expiration))
+                .signWith(getSigningKey(), Jwts.SIG.HS256) // ✅ Nueva forma
                 .compact();
     }
 

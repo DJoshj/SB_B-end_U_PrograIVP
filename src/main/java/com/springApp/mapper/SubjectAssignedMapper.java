@@ -1,10 +1,7 @@
 package com.springApp.mapper;
 
-import com.springApp.dtos.SubjectAssignedDTO;
 import com.springApp.dtos.SubjectAssignedResponseDTO;
-import com.springApp.dtos.UserDTO;
 import com.springApp.entity.SubjectAssignedEntity;
-import com.springApp.entity.UserEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

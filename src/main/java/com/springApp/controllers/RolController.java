@@ -1,7 +1,6 @@
 package com.springApp.controllers;
 
 import com.springApp.dtos.RolDTO;
-import com.springApp.dtos.UserDTO;
 import com.springApp.exception.ResourceNotFoundException;
 import com.springApp.mapper.UserMapper;
 import com.springApp.services.RolService;
@@ -26,11 +25,9 @@ public class RolController {
         try{
             RolDTO rolCreated = rolService.createRol(rolDTO);
             return ResponseEntity.ok(rolCreated);
-        }catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }catch (Exception e){
+        } catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
