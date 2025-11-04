@@ -6,12 +6,13 @@ import com.springApp.exception.*;
 import com.springApp.mapper.SubjectAssignedMapper;
 import com.springApp.repositories.*;
 import com.springApp.services.SubjectAssignedService;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -102,13 +103,23 @@ public class SubjectAssignedServiceImpl implements SubjectAssignedService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<SubjectAssignedResponseDTO> getSubjectsByPeriod(Long periodId) {
-        return List.of();
+        log.info("Obteniendo materias asignadas del periodo: {}", periodId);
+        List<SubjectAssignedEntity> subjects = subjectAssignedRepository.findByPeriodPeriodId(periodId);
+        return subjects.stream()
+                .map(assignedMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<SubjectAssignedResponseDTO> getAvailableSubjects(Long periodId) {
-        return List.of();
+        log.info("Obteniendo materias disponibles del periodo: {}", periodId);
+        List<SubjectAssignedEntity> subjects = subjectAssignedRepository.findAvailableByPeriod(periodId);
+        return subjects.stream()
+                .map(assignedMapper::toDTO)
+                .collect(Collectors.toList());
+
     }
 
     @Override
