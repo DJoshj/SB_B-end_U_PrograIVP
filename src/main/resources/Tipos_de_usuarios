@@ -1,0 +1,64 @@
+🎓 Tipos de usuario en un sistema de inscripción
+🧑‍💼 1. Administrador general
+Rol principal: control total del sistema.
+Responsabilidades:
+--->Crear, editar y eliminar usuarios (estudiantes, docentes, personal).
+--->Gestionar roles y permisos.
+--->Configurar períodos de inscripción.
+--->Generar reportes globales (estadísticas, inscripciones, pagos).
+--->Aprobar o cancelar inscripciones especiales.
+
+Ejemplo: Director académico o encargado de sistemas.
+
+👩‍🏫 2. Docente / Profesor
+Rol principal: gestionar materias y estudiantes inscritos.
+Responsabilidades:
+--->Ver lista de estudiantes inscritos en sus asignaturas.
+--->Calificar o validar inscripciones.
+--->Subir materiales o notas.
+--->Enviar observaciones o notificaciones al estudiante.
+
+🎓 3. Estudiante
+Rol principal: inscribirse y consultar su información académica.
+Responsabilidades:
+--->Ver oferta académica (materias disponibles).
+--->Realizar inscripciones o retiros de materias.
+--->Consultar horarios, calificaciones y estados de inscripción.
+--->Descargar comprobantes (por ejemplo, PDF con materias inscritas).
+
+🧾 4. Personal administrativo / secretaría
+Rol principal: soporte y gestión documental.
+Responsabilidades:
+--->Verificar inscripciones y pagos.
+--->Aprobar solicitudes de inscripción tardía.
+--->Generar documentos oficiales (constancias, solvencias, etc.).
+--->Atender solicitudes o reclamos.
+
+💰 5. Finanzas / Contabilidad
+Rol principal: manejar el aspecto económico.
+Responsabilidades:
+--->Verificar pagos de inscripción.
+--->Emitir facturas o comprobantes.
+--->Registrar deudas o abonos.
+--->Generar reportes financieros.
+
+💻 6. Soporte técnico / desarrollador
+Rol principal: mantenimiento técnico del sistema.
+Responsabilidades:
+--->Monitorear logs y errores.
+--->Crear respaldos de base de datos.
+--->Actualizar módulos o endpoints.
+--->Administrar seguridad y usuarios del sistema.
+
+=====================================================
+*****************************************************
+=====================================================
+⚙️ Ejemplo de roles (para tu sistema con Spring Boot)
+Podrías definir tus roles en una tabla roles así:
+
+id	name	descripción
+1	ADMIN	Control total del sistema
+2	STUDENT	Puede inscribirse en materias
+3	TEACHER	Gestiona materias y notas
+4	FINANCE	Administra pagos e inscripciones
+5	STAFF	Apoyo administrativo
