@@ -16,7 +16,7 @@ import java.util.List;
 public class SubjectAssignedWithInscriptionsDTO {
     // Información básica de la materia asignada
     @JsonProperty("subjectAssignedId")
-    private Integer subjectAssignedId;
+    private Long subjectAssignedId;
 
     @JsonProperty("subjectCode")
     private String subjectCode;

@@ -8,16 +8,17 @@ import java.util.List;
 public interface InscriptionService {
     /**
      * Inscribe un estudiante en una materia asignada
+     *
      * @param dto Datos de la inscripción
      * @return DTO con la información de la inscripción creada
      */
-    InscriptionResponseDTO enrollStudent(InscriptionRequestDTO dto);
+    List<InscriptionResponseDTO> enrollStudent(InscriptionRequestDTO dto);
 
     /**
      * Cancela una inscripción activa
      * @param inscriptionId ID de la inscripción
      */
-    void cancelInscription(Integer inscriptionId);
+    void cancelInscription(Long inscriptionId);
 
     /**
      * Obtiene todas las inscripciones de un estudiante
@@ -39,7 +40,7 @@ public interface InscriptionService {
      * @param inscriptionId ID de la inscripción
      * @return DTO con la información de la inscripción
      */
-    InscriptionResponseDTO getInscriptionById(Integer inscriptionId);
+    InscriptionResponseDTO getInscriptionById(Long inscriptionId);
 
     /**
      * Obtiene el número de inscripciones activas de un estudiante en un periodo
@@ -55,5 +56,5 @@ public interface InscriptionService {
      * @param subjectAssignedId ID de la materia asignada
      * @return true si puede inscribirse, false en caso contrario
      */
-    boolean canEnroll(Long studentId, Integer subjectAssignedId);
+    boolean canEnroll(Long studentId, Long subjectAssignedId);
 }

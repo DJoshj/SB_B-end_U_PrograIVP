@@ -1,0 +1,19 @@
+Paso 1: Crear Datos Básicos (Pre-requisitos)
+1. Crear Carrera
+2. Crear Usuario (para estudiante)
+3. Crear Usuario (para docente)
+4. Crear Periodo
+5. Crear Horario
+6. Crear Aula
+
+
+Paso 2: Crear Entidades Principales
+7. Crear Estudiante
+8. Crear Docente
+9. Crear Materia
+
+
+Paso 3: Asignar y Matricular
+10. Asignar Materia (vincular materia + docente + periodo + horario + aula)
+11. Inscribir Estudiante
+12. Descargar Reporte PDF

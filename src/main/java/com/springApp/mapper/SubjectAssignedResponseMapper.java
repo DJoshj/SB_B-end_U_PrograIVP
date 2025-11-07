@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SubjectAssignedMapper {
+public class SubjectAssignedResponseMapper {
     @Autowired
     private ModelMapper modelMapper;
 
@@ -15,8 +15,6 @@ public class SubjectAssignedMapper {
     public SubjectAssignedEntity toEntity(SubjectAssignedResponseDTO subjectAssignedDTO){
         return modelMapper.map(subjectAssignedDTO, SubjectAssignedEntity.class);
     }
-
-
 
     //entidad a dto
     public SubjectAssignedResponseDTO toDTO(SubjectAssignedEntity subjectAssigned) {

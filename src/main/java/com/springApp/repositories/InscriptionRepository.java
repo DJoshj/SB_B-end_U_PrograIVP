@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface InscriptionRepository extends JpaRepository<InscriptionsEntity, Long> {
     // ========== BÚSQUEDAS BÁSICAS ==========
-    List<InscriptionsEntity> findBySubjectAssignedIdSubjectAssigned(Integer subjectAssignedId);
+    List<InscriptionsEntity> findBySubjectAssignedIdSubjectAssigned(Long subjectAssignedId);
     List<InscriptionsEntity> findByPeriodPeriodId(Long periodId);
     // Obtener inscripciones por estudiante
     List<InscriptionsEntity> findByStudentStudentId(Long studentId);
@@ -24,7 +24,7 @@ public interface InscriptionRepository extends JpaRepository<InscriptionsEntity,
             "i.state = 'ACTIVE'")
     boolean existsActiveInscription(
             @Param("studentId") Long studentId,
-            @Param("subjectAssignedId") Integer subjectAssignedId
+            @Param("subjectAssignedId") Long subjectAssignedId
     );
 
     // Verificar si el estudiante ya aprobó la materia

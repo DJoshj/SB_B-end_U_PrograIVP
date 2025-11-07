@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class InscriptionResponseDTO {
     @JsonProperty("inscriptionId")
-    private Integer inscriptionId;
+    private Long inscriptionId;
 
     // Información del estudiante
     @JsonProperty("studentId")
@@ -30,7 +30,7 @@ public class InscriptionResponseDTO {
 
     // Información de la materia asignada
     @JsonProperty("subjectAssignedId")
-    private Integer subjectAssignedId;
+    private Long subjectAssignedId;
 
     @JsonProperty("subjectId")
     private Long subjectId;
@@ -56,7 +56,7 @@ public class InscriptionResponseDTO {
 
     // Información de horario y aula
     @JsonProperty("scheduleId")
-    private Integer scheduleId;
+    private Long scheduleId;
 
     @JsonProperty("scheduleDays")
     private String scheduleDays;
@@ -65,7 +65,7 @@ public class InscriptionResponseDTO {
     private String scheduleTime;
 
     @JsonProperty("classroomId")
-    private Integer classroomId;
+    private Long classroomId;
 
     @JsonProperty("classroomName")
     private String classroomName;

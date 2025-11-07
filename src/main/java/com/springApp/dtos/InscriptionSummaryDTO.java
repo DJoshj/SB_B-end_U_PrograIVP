@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class InscriptionSummaryDTO {
     @JsonProperty("inscriptionId")
-    private Integer inscriptionId;
+    private Long inscriptionId;
 
     @JsonProperty("studentId")
     private Long studentId;

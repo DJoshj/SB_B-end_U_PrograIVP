@@ -33,14 +33,14 @@ public interface SubjectAssignedService {
      * @param id ID de la materia asignada
      * @return DTO con información básica
      */
-    SubjectAssignedResponseDTO getSubjectAssignedById(Integer id);
+    SubjectAssignedResponseDTO getSubjectAssignedById(Long id);
 
     /**
      * Obtiene una materia asignada con todas sus inscripciones
      * @param id ID de la materia asignada
      * @return DTO con información completa incluyendo inscripciones
      */
-    SubjectAssignedWithInscriptionsDTO getSubjectAssignedWithInscriptions(Integer id);
+    SubjectAssignedWithInscriptionsDTO getSubjectAssignedWithInscriptions(Long id);
 
     /**
      * Obtiene materias asignadas por docente
@@ -54,12 +54,12 @@ public interface SubjectAssignedService {
      * @param classroomId ID del aula
      * @return Lista de materias asignadas en el aula
      */
-    List<SubjectAssignedResponseDTO> getSubjectsByClassroom(Integer classroomId);
+    List<SubjectAssignedResponseDTO> getSubjectsByClassroom(Long classroomId);
 
     /**
      * Actualiza el cupo disponible de una materia asignada
      * @param subjectAssignedId ID de la materia asignada
      * @param increase true para aumentar, false para disminuir
      */
-    void updateAvailableSpace(Integer subjectAssignedId, boolean increase);
+    void updateAvailableSpace(Long subjectAssignedId, boolean increase);
 }

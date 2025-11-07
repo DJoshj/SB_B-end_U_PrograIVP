@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SubjectAssignedResponseDTO {
     @JsonProperty("subjectAssignedId")
-    private Integer subjectAssignedId;
+    private Long subjectAssignedId;
 
     @JsonProperty("subjectId")
     private Long subjectId;
@@ -49,7 +49,7 @@ public class SubjectAssignedResponseDTO {
     private String scheduleTime;
 
     @JsonProperty("classroomId")
-    private Integer classroomId;
+    private Long classroomId;
 
     @JsonProperty("classroomName")
     private String classroomName;

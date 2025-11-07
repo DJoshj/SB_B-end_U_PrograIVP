@@ -1,0 +1,373 @@
+1️⃣ CAREERS (Carreras)
+    - POST Crear Carrera
+    POST http://localhost:8080/api/v1/careers/create
+    Content-Type: application/json
+
+    {
+      "nameCareer": "Ingeniería en Sistemas y Computación",
+      "faculty": "Facultad de Ingeniería"
+    }
+
+    - GET Obtener Todas las Carreras
+    GET http://localhost:8080/api/v1/careers/all
+
+    - GET Buscar Carreras
+      GET http://localhost:8080/api/v1/careers/search?query=sistemas
+
+    - PUT Actualizar Carrera
+      PUT http://localhost:8080/api/v1/careers/update/1
+      Content-Type: application/json
+
+      {
+        "nameCareer": "Ingeniería en Sistemas (Actualizada)",
+        "faculty": "Facultad de Ingeniería"
+      }
+
+    - DELETE Eliminar Carrera
+    DELETE http://localhost:8080/api/v1/careers/delete/1
+
+
+2️⃣ STUDENTS (Estudiantes)
+    - POST Crear Estudiante
+    POST http://localhost:8080/api/v1/students/create
+    Content-Type: application/json
+
+    {
+      "userId": 1,
+      "carnet": "25-1281-2022",
+      "name": "José Luis",
+      "lastname": "Ramos Ramos",
+      "email": "jose.ramos@example.com",
+      "phone": "7890-1234",
+      "address": "San Salvador, El Salvador",
+      "careerId": 1
+    }
+
+    - GET Obtener Todos los Estudiantes
+    GET http://localhost:8080/api/v1/students/all
+
+    - GET Obtener Estudiante por Carnet
+    GET http://localhost:8080/api/v1/students/carnet/25-1281-2022
+
+    -GET Buscar Estudiantes
+    GET http://localhost:8080/api/v1/students/search?query=José
+
+    - GET Estudiantes por Carrera
+    GET http://localhost:8080/api/v1/students/career/1
+
+    - GET Contar Estudiantes por Carrera
+    GET http://localhost:8080/api/v1/students/career/1/count
+
+3️⃣ TEACHERS (Docentes)
+    - POST Crear Docente
+    POST http://localhost:8080/api/v1/teachers/create
+    Content-Type: application/json
+
+    {
+      "userId": 2,
+      "teacherCode": "T001",
+      "names": "Juan Carlos",
+      "lastName": "Pérez López",
+      "email": "juan.perez@utec.edu.sv",
+      "specialty": "Programación"
+    }
+
+    - GET Obtener Docente por Código
+    GET http://localhost:8080/api/v1/teachers/code/T001
+
+    - GET Docentes por Especialidad
+    GET http://localhost:8080/api/v1/teachers/specialty/Programación
+
+    - GET Obtener Todas las Especialidades
+    GET http://localhost:8080/api/v1/teachers/specialties
+
+4️⃣ SUBJECTS (Materias)
+    - POST Crear Materia
+    POST http://localhost:8080/api/v1/subjects/create
+    Content-Type: application/json
+
+    {
+      "subjectCode": "PROG4",
+      "name": "Programación IV",
+      "valueUnits": 4,
+      "careerId": 1
+    }
+
+    - GET Materias por Carrera
+    GET http://localhost:8080/api/v1/subjects/career/1
+
+    - GET Obtener Materia por Código
+    GET http://localhost:8080/api/v1/subjects/code/PROG4
+
+5️⃣ PERIODS (Periodos)
+    - POST Crear Periodo
+    POST http://localhost:8080/api/v1/periods/create
+    Content-Type: application/json
+
+    {
+      "name": "CICLO 2 - 2025",
+      "year": 2025,
+      "startDate": "2025-07-24",
+      "endDate": "2025-12-20",
+      "schedule": "Regular"
+    }
+
+    - GET Obtener Periodo Actual
+    GET http://localhost:8080/api/v1/periods/current
+
+    - GET Periodos por Año
+    GET http://localhost:8080/api/v1/periods/year/2025
+
+    - GET Obtener Todos los Años{
+    GET http://localhost:8080/api/v1/periods/years
+
+6️⃣ SCHEDULES (Horarios)
+    - Ejemplos de horarios:
+    {"days": "LUNES-MIÉRCOLES", "schedule": "18:40-20:10"}
+    {"days": "SÁBADO", "schedule": "13:00-16:00"}
+    {"days": "DOMINGO", "schedule": "07:00-10:00"}
+
+    - POST Crear Horario
+    POST http://localhost:8080/api/v1/schedules/create
+    Content-Type: application/json
+
+    {
+      "days": "MARTES-JUEVES-SÁBADO",
+      "schedule": "18:40-20:10"
+    }
+
+    - GET Horarios por Día
+    GET http://localhost:8080/api/v1/schedules/day/LUNES
+
+    - GET Obtener Días Únicos
+    GET http://localhost:8080/api/v1/schedules/days
+
+7️⃣ CLASSROOMS (Aulas)
+    - Ejemplos de aulas:
+      json{"name": "EN LÍNEA", "ability": 50, "building": "Virtual"}
+      {"name": "BJ-AB 3", "ability": 35, "building": "Edificio B"}
+
+    - POST Crear Aula
+    POST http://localhost:8080/api/v1/classrooms/create
+    Content-Type: application/json
+
+    {
+      "name": "BJ-LAB 3",
+      "ability": 30,
+      "building": "Edificio B"
+    }
+
+    - GET Aulas por Edificio
+    GET http://localhost:8080/api/v1/classrooms/building/Edificio B
+
+    - GET Aulas por Capacidad Mínima
+    GET http://localhost:8080/api/v1/classrooms/capacity/30
+
+    - GET Obtener Todos los Edificios
+    GET http://localhost:8080/api/v1/classrooms/buildings
+
+8️⃣ SUBJECT ASSIGNMENTS (Materias Asignadas)
+    - POST Asignar Materia
+    POST http://localhost:8080/api/v1/subject-assignments/create
+    Content-Type: application/json
+
+    {
+      "subjectId": 1,
+      "teacherId": 1,
+      "periodId": 1,
+      "scheduleId": 1,
+      "classroomId": 1,
+      "maximumCapacity": 30,
+      "section": "A"
+    }
+
+    - GET Materias Disponibles por Periodo
+    GET http://localhost:8080/api/v1/subject-assignments/available/1
+    Response: Solo materias con availableSpace > 0
+
+    - GET Materia Asignada con Inscripciones
+    GET http://localhost:8080/api/v1/subject-assignments/1/inscriptions
+    Response: Incluye lista de estudiantes inscritos
+
+    - GET Materias por Docente
+    GET http://localhost:8080/api/v1/subject-assignments/teacher/1
+
+    - GET Materias por Aula
+    GET http://localhost:8080/api/subject-assignments/classroom/1
+
+9️⃣ INSCRIPTIONS (Inscripciones) ⭐
+    - POST Inscribir Estudiante (Múltiples Materias)
+    POST http://localhost:8080/api/v1/inscriptions
+    Content-Type: application/json
+
+    {
+      "studentId": 1,
+      "periodId": 1,
+      "subjectsAssigned": [1, 2, 3, 4]
+    }
+    Response 200 OK:
+    [
+      {
+        "inscriptionId": 1,
+        "studentId": 1,
+        "studentName": "José Luis Ramos Ramos",
+        "studentCarnet": "25-1281-2022",
+        "subjectCode": "ADCC1",
+        "subjectName": "Administración de Centros de Cómputo",
+        "section": "02",
+        "state": "ACTIVE",
+        ...
+      },
+      {
+        "inscriptionId": 2,
+        "studentName": "José Luis Ramos Ramos",
+        "subjectCode": "CIDI1",
+        "subjectName": "Sistemas Digitales Presencial",
+        ...
+      },
+      ...
+    ]
+    Efectos Secundarios:
+
+    - Reduce availableSpace de cada materia
+    - Genera PDF con todas las materias
+    - Guarda PDF en /reportes/inscripciones/
+    - Envía email al estudiante con PDF adjunto
+
+    - GET Inscripciones de un Estudiante
+    GET http://localhost:8080/api/v1/inscriptions/student/1
+
+    - GET Inscripciones por Estudiante y Periodo
+    GET http://localhost:8080/api/v1/inscriptions/student/1/period/1
+
+    - DELETE Cancelar Inscripción
+    DELETE http://localhost:8080/api/v1/inscriptions/1
+    Efectos:
+    - Cambia estado a RETIRED
+    - Incrementa availableSpace de la materia
+
+    - GET Verificar si Puede Inscribirse
+    GET http://localhost:8080/api/v1/inscriptions/can-enroll?studentId=1&subjectAssignedId=1
+    Response:
+        {
+          "canEnroll": true,
+          "studentId": 1,
+          "subjectAssignedId": 1
+        }
+
+🔟 REPORTS (Reportes PDF)
+    - GET Descargar Reporte PDF
+    GET http://localhost:8080/api/reports/download/inscripcion_25-1281-2022_CICLO_2_2025_20251102.pdf
+    Response: Archivo PDF descargable
+
+    - POST Re-enviar Reporte por Email
+    POST http://localhost:8080/api/reports/resend/1
+
+============================================================================
+                Flujo: Inscribir un Estudiante en 4 Materias
+============================================================================
+# 1. Crear Carrera
+POST /api/careers
+{
+  "nameCareer": "Ingeniería en Sistemas",
+  "faculty": "Facultad de Ingeniería"
+}
+# Resultado: careerId = 1
+
+# 2. Crear Usuario para Estudiante (asumiendo que ya existe)
+# userId = 1
+
+# 3. Crear Estudiante
+POST /api/students
+{
+  "userId": 1,
+  "carnet": "25-1281-2022",
+  "name": "José Luis",
+  "lastname": "Ramos Ramos",
+  "email": "jose.ramos@example.com",
+  "phone": "7890-1234",
+  "address": "San Salvador",
+  "careerId": 1
+}
+# Resultado: studentId = 1
+
+# 4. Crear Periodo
+POST /api/periods
+{
+  "name": "CICLO 2 - 2025",
+  "year": 2025,
+  "startDate": "2025-07-24",
+  "endDate": "2025-12-20",
+  "schedule": "Regular"
+}
+# Resultado: periodId = 1
+
+# 5. Crear 4 Horarios
+POST /api/schedules
+{"days": "MARTES-JUEVES-SÁBADO", "schedule": "18:40-20:10"}  # scheduleId = 1
+{"days": "SÁBADO", "schedule": "13:00-16:00"}                # scheduleId = 2
+{"days": "DOMINGO", "schedule": "07:00-10:00"}               # scheduleId = 3
+{"days": "LUNES-MIÉRCOLES", "schedule": "18:40-20:10"}       # scheduleId = 4
+
+# 6. Crear 3 Aulas
+POST /api/classrooms
+{"name": "EN LÍNEA", "ability": 50, "building": "Virtual"}   # classroomId = 1
+{"name": "BJ-AB 3", "ability": 35, "building": "Edificio B"} # classroomId = 2
+{"name": "BJ-LAB 3", "ability": 30, "building": "Edificio B"}# classroomId = 3
+
+# 7. Crear Usuario para Docente
+# userId = 2
+
+# 8. Crear Docente
+POST /api/teachers
+{
+  "userId": 2,
+  "teacherCode": "T001",
+  "names": "Juan Carlos",
+  "lastName": "Pérez López",
+  "email": "juan.perez@utec.edu.sv",
+  "specialty": "Programación"
+}
+# Resultado: teacherId = 1
+
+# 9. Crear 4 Materias
+POST /api/subjects
+{"subjectCode": "ADCC1", "name": "Administración de Centros de Cómputo", "valueUnits": 4, "careerId": 1}  # subjectId = 1
+{"subjectCode": "CIDI1", "name": "Sistemas Digitales Presencial", "valueUnits": 4, "careerId": 1}         # subjectId = 2
+{"subjectCode": "PROG4", "name": "Programación IV Presencial", "valueUnits": 4, "careerId": 1}            # subjectId = 3
+{"subjectCode": "SIOP1", "name": "Sistemas Operativos", "valueUnits": 4, "careerId": 1}                   # subjectId = 4
+
+# 10. Asignar 4 Materias
+POST /api/subject-assignments
+{"subjectId": 1, "teacherId": 1, "periodId": 1, "scheduleId": 1, "classroomId": 1, "maximumCapacity": 30, "section": "02"}  # id = 1
+{"subjectId": 2, "teacherId": 1, "periodId": 1, "scheduleId": 2, "classroomId": 2, "maximumCapacity": 35, "section": "01"}  # id = 2
+{"subjectId": 3, "teacherId": 1, "periodId": 1, "scheduleId": 3, "classroomId": 3, "maximumCapacity": 30, "section": "02"}  # id = 3
+{"subjectId": 4, "teacherId": 1, "periodId": 1, "scheduleId": 4, "classroomId": 1, "maximumCapacity": 30, "section": "01"}  # id = 4
+
+# 11. Inscribir Estudiante en las 4 Materias
+POST /api/inscriptions
+{
+  "studentId": 1,
+  "periodId": 1,
+  "subjectsAssigned": [1, 2, 3, 4]
+}
+
+# ✅ Resultado Esperado:
+# - 4 inscripciones creadas
+# - Cupos reducidos en cada materia
+# - PDF generado con las 4 materias
+# - Email enviado a jose.ramos@example.com
+# - PDF guardado en: reportes/inscripciones/inscripcion_25-1281-2022_CICLO_2_2025_YYYYMMDD.pdf
+
+# 12. Verificar Inscripciones
+GET /api/inscriptions/student/1
+
+# 13. Verificar Materia Asignada con Inscripciones
+GET /api/subject-assignments/1/inscriptions
+
+# 14. Descargar PDF
+GET /api/reports/download/inscripcion_25-1281-2022_CICLO_2_2025_YYYYMMDD.pdf
+
+
+
+
