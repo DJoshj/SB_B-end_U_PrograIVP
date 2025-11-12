@@ -16,5 +16,5 @@ public class TeacherResponseDTO {
     private String names;
     private String lastName;
     private String email;
-    private String specialty;
+    private String speciality;
 }

@@ -2,16 +2,19 @@ package com.springApp.services.impl;
 
 import com.springApp.dtos.TeacherDTO;
 import com.springApp.dtos.TeacherResponseDTO;
+import com.springApp.entity.RolEntity;
 import com.springApp.entity.TeacherEntity;
 import com.springApp.entity.UserEntity;
+import com.springApp.entity.states.UserState;
 import com.springApp.exception.DuplicateResourceException;
 import com.springApp.exception.ResourceNotFoundException;
 import com.springApp.mapper.TeacherMapper;
+import com.springApp.repositories.RolRepository;
 import com.springApp.repositories.TeacherRepository;
-import com.springApp.repositories.UserRepository;
 import com.springApp.services.TeacherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +28,8 @@ public class TeacherServiceImpl implements TeacherService {
 
     private final TeacherMapper teacherMapper;
     private final TeacherRepository teacherRepository;
-    private final UserRepository userRepository;
+    private final RolRepository rolRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -36,8 +40,19 @@ public class TeacherServiceImpl implements TeacherService {
             throw new DuplicateResourceException("Ya existe un docente con el código: " + dto.getTeacherCode());
         }
 
-        UserEntity user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
+        if (teacherRepository.existsByEmail(dto.getEmail())) {
+            throw new DuplicateResourceException("Ya existe un docente con el email: " + dto.getEmail());
+        }
+
+        // Crear el usuario desde el DTO
+        UserEntity user= new UserEntity();
+        user.setUsername(dto.getUser().getUsername());
+        user.setPassword(passwordEncoder.encode(dto.getUser().getPassword()));
+        user.setEmail(dto.getEmail());
+        user.setState(UserState.ACTIVE);
+        RolEntity rol = rolRepository.findById(dto.getUser().getRoles().getRolId())
+                .orElseThrow(() -> new ResourceNotFoundException("Rol no encontrado"));
+        user.setRoles(rol);
 
         TeacherEntity teacher = new TeacherEntity();
         teacher.setUser(user);
@@ -45,10 +60,10 @@ public class TeacherServiceImpl implements TeacherService {
         teacher.setNames(dto.getNames());
         teacher.setLastName(dto.getLastName());
         teacher.setEmail(dto.getEmail());
-        teacher.setSpecialty(dto.getSpecialty());
+        teacher.setSpeciality(dto.getSpeciality());
 
         TeacherEntity saved = teacherRepository.save(teacher);
-        log.info("Docente creado con ID: {}", saved.getTeacherId());
+        log.info("Teacher created with ID: {}", saved.getTeacherId());
 
         return teacherMapper.toDTO(saved);
     }
@@ -63,9 +78,10 @@ public class TeacherServiceImpl implements TeacherService {
         teacher.setNames(dto.getNames());
         teacher.setLastName(dto.getLastName());
         teacher.setEmail(dto.getEmail());
-        teacher.setSpecialty(dto.getSpecialty());
+        teacher.setSpeciality(dto.getSpeciality());
 
         TeacherEntity teacherUpdated = teacherRepository.save(teacher);
+        log.info("Teacher Updated with ID: {}", teacher.getTeacherId());
         return teacherMapper.toDTO(teacherUpdated);
     }
 
@@ -96,7 +112,7 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     @Transactional(readOnly = true)
     public List<TeacherResponseDTO> getTeachersBySpecialty(String specialty) {
-        return teacherRepository.findBySpecialty(specialty).stream()
+        return teacherRepository.findBySpeciality(specialty).stream()
                 .map(teacherMapper::toDTO)
                 .toList();
     }
@@ -121,6 +137,7 @@ public class TeacherServiceImpl implements TeacherService {
         if (!teacherRepository.existsById(id)) {
             throw new ResourceNotFoundException("Docente no encontrado");
         }
+        log.info("Teacher Deleted with ID: {}", id);
         teacherRepository.deleteById(id);
     }
 }

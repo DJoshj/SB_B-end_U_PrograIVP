@@ -16,7 +16,7 @@ public class JwtUtils {
     /*secreteKey -> nos ayudara a firmar los metodos para que se tenga la autorizacion legitima
      * la cual vamos a generar el token*/
     @Value("${jwt.secret.key}")
-    private String secreteKey;
+    private String secretKey;
 
     //tiempo de validez en milisegundos configurado para 1 dia
     @Value("${jwt.time.expiration}")
@@ -37,7 +37,7 @@ public class JwtUtils {
 
     //Obtener firma del token
     public javax.crypto.SecretKey  getSigningKey(){
-        byte[] keyBytes = Decoders.BASE64.decode(secreteKey);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

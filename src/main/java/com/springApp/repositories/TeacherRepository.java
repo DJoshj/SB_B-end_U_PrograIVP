@@ -22,8 +22,8 @@ public interface TeacherRepository extends JpaRepository<TeacherEntity, Long> {
     /**
      * Busca todos los docentes que tengan una especialidad específica
      */
-    @Query("SELECT t FROM TeacherEntity t WHERE LOWER(t.specialty) = LOWER(:specialty)")
-    List<TeacherEntity> findBySpecialty(@Param("specialty") String specialty);
+    @Query("SELECT t FROM TeacherEntity t WHERE LOWER(t.speciality) = LOWER(:speciality)")
+    List<TeacherEntity> findBySpeciality(@Param("speciality") String speciality);
 
     /**
      * Búsqueda general por nombre, código o especialidad
@@ -33,13 +33,13 @@ public interface TeacherRepository extends JpaRepository<TeacherEntity, Long> {
         WHERE LOWER(t.names) LIKE LOWER(CONCAT('%', :search, '%'))
            OR LOWER(t.lastName) LIKE LOWER(CONCAT('%', :search, '%'))
            OR LOWER(t.teacherCode) LIKE LOWER(CONCAT('%', :search, '%'))
-           OR LOWER(t.specialty) LIKE LOWER(CONCAT('%', :search, '%'))
+           OR LOWER(t.speciality) LIKE LOWER(CONCAT('%', :search, '%'))
     """)
     List<TeacherEntity> searchTeachers(@Param("search") String search);
 
     /**
      * Devuelve todas las especialidades disponibles sin duplicados
      */
-    @Query("SELECT DISTINCT t.specialty FROM TeacherEntity t WHERE t.specialty IS NOT NULL")
+    @Query("SELECT DISTINCT t.speciality FROM TeacherEntity t WHERE t.speciality IS NOT NULL")
     List<String> findAllSpecialties();
 }

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/students")
+@RequestMapping("/student")
 @RequiredArgsConstructor
 public class StudentController {
     private final StudentService studentService;
@@ -49,12 +49,7 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getStudentsByCareer(careerId));
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<StudentResponseDTO>> searchStudents(@RequestParam String query) {
-        return ResponseEntity.ok(studentService.searchStudents(query));
-    }
-
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteStudent(@PathVariable Long id) {
         studentService.deleteStudent(id);
         return ResponseEntity.noContent().build();

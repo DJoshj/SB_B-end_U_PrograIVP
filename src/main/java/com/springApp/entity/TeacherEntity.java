@@ -21,7 +21,7 @@ public class TeacherEntity {
     private Long teacherId;
 
     //relation with user
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user", nullable = false)
     private UserEntity user;
 
@@ -43,8 +43,8 @@ public class TeacherEntity {
     private String email;
 
     @NotBlank
-    @Column(nullable = false, length = 100)
-    private String specialty;
+    @Column(name ="speciality", nullable = false, length = 100)
+    private String speciality;
 
     //relation with subjectAssigned
     @OneToMany(mappedBy = "teacher")

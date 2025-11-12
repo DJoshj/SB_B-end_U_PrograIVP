@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/careers")
+@RequestMapping("/career")
 @RequiredArgsConstructor
 public class CareerController {
     private final CareerService careerService;
