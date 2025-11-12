@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/careers")
+@CrossOrigin("*")
 @RequiredArgsConstructor
 public class CareerController {
     private final CareerService careerService;

@@ -81,7 +81,7 @@ public class DataInitializer implements CommandLineRunner {
                     "kaisy.ramos@gmail.com",
                     UserState.ACTIVE,
                     new RolEntity(3L, "student")
-            ));
+            )); 
 
             logger.info("✅ Roles Created Successfully::::Mysql");
             logger.info("📊 Total roles: " + userRepository.count());
