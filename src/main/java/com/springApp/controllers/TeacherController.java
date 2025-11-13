@@ -1,5 +1,6 @@
 package com.springApp.controllers;
 
+import com.springApp.dtos.StudentResponseDTO;
 import com.springApp.dtos.TeacherDTO;
 import com.springApp.dtos.TeacherResponseDTO;
 import com.springApp.services.TeacherService;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/teachers")
+@RequestMapping("/teacher")
 public class TeacherController {
     @Autowired
     private TeacherService teacherService;
@@ -52,9 +53,9 @@ public class TeacherController {
     }
 
 
-    @GetMapping("/search")
-    public ResponseEntity<?> searchTeachers(@RequestParam String query) {
-        return ResponseEntity.ok(teacherService.searchTeachers(query));
+    @GetMapping("/all")
+    public ResponseEntity<List<TeacherResponseDTO>> getAllTeachers() {
+        return ResponseEntity.ok(teacherService.getAllTeachers());
     }
 
     @GetMapping("/specialties")
@@ -62,7 +63,7 @@ public class TeacherController {
         return ResponseEntity.ok(teacherService.getAllSpecialties());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteTeacher(@PathVariable Long id) {
         teacherService.deleteTeacher(id);
         return ResponseEntity.noContent().build();

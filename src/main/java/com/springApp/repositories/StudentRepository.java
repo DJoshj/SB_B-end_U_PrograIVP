@@ -21,12 +21,6 @@ public interface StudentRepository extends JpaRepository<StudentEntity, Long> {
 
     boolean existsByEmail(String email);
 
-    @Query("SELECT s FROM StudentEntity s WHERE " +
-            "LOWER(s.name) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
-            "LOWER(s.lastname) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
-            "LOWER(s.carnet) LIKE LOWER(CONCAT('%', :search, '%'))")
-    List<StudentEntity> searchStudents(@Param("search") String search);
-
     @Query("SELECT COUNT(s) FROM StudentEntity s WHERE s.career.careerId = :careerId")
     Long countByCareer(@Param("careerId") Long careerId);
 }

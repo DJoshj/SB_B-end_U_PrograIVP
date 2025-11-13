@@ -1,4 +1,4 @@
-1️⃣ CAREERS (Carreras)
+1️⃣ CAREERS (Carreras) (Aun se puede hacer una tabla para facultad)
     - POST Crear Carrera
     POST http://localhost:8080/api/v1/careers/create
     Content-Type: application/json
@@ -33,15 +33,36 @@
     Content-Type: application/json
 
     {
-      "userId": 1,
-      "carnet": "25-1281-2022",
-      "name": "José Luis",
-      "lastname": "Ramos Ramos",
-      "email": "jose.ramos@example.com",
-      "phone": "7890-1234",
-      "address": "San Salvador, El Salvador",
-      "careerId": 1
+          "carnet": "25-1281-2022",
+          "name": "José Luis",
+          "lastname": "Ramos Ramos",
+          "email": "jose.ramos@gmail.com",
+          "phone": "7890-1234",
+          "address": "San Salvador, El Salvador",
+          "careerId": 2,
+          "user": {
+            "username": "JoseRamos",
+            "password": "Satoru#2001",
+            "roles": {
+                "rolId": 1
+            }
+          }
     }
+
+    - PUT Actualizar Estudiante
+        POST http://localhost:8080/api/v1/students/update/1
+        Content-Type: application/json
+
+        {
+          "userId": 1,
+          "carnet": "25-1281-2022",
+          "name": "José Luis",
+          "lastname": "Ramos Ramos",
+          "email": "jose.ramos@gmail.com",
+          "phone": "7890-1234",
+          "address": "San Salvador, El Salvador",
+          "careerId": 1
+        }
 
     - GET Obtener Todos los Estudiantes
     GET http://localhost:8080/api/v1/students/all
@@ -64,12 +85,29 @@
     Content-Type: application/json
 
     {
-      "userId": 2,
-      "teacherCode": "T001",
-      "names": "Juan Carlos",
-      "lastName": "Pérez López",
-      "email": "juan.perez@utec.edu.sv",
-      "specialty": "Programación"
+          "teacherCode": "T0001",
+          "names": "Miguel Ayala",
+          "lastName": "Ochoa",
+          "email": "miguel.ochoa@gmail.com",
+          "speciality": "Ingenieria de software",
+          "user": {
+            "username": "miguelOchoa",
+            "password": "miguelOchoa",
+            "roles": {
+                "rolId": 2
+            }
+          }
+    }
+
+    - update docente
+    http://localhost:8080/api/v1/teacher/update/1
+    {
+          "teacherCode": "T0001",
+          "names": "Miguel Ayala",
+          "lastName": "Ochoa Ayala",
+          "email": "miguel.ochoa@gmail.com",
+          "speciality": "Ingenieria de software"
+
     }
 
     - GET Obtener Docente por Código
@@ -144,7 +182,7 @@
 
 7️⃣ CLASSROOMS (Aulas)
     - Ejemplos de aulas:
-      json{"name": "EN LÍNEA", "ability": 50, "building": "Virtual"}
+      {"name": "EN LÍNEA", "ability": 50, "building": "Virtual"}
       {"name": "BJ-AB 3", "ability": 35, "building": "Edificio B"}
 
     - POST Crear Aula

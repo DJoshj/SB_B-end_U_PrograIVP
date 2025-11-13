@@ -3,17 +3,21 @@ package com.springApp.services.impl;
 import com.springApp.dtos.StudentDTO;
 import com.springApp.dtos.StudentResponseDTO;
 import com.springApp.entity.CareerEntity;
+import com.springApp.entity.RolEntity;
 import com.springApp.entity.StudentEntity;
 import com.springApp.entity.UserEntity;
+import com.springApp.entity.states.UserState;
 import com.springApp.exception.DuplicateResourceException;
 import com.springApp.exception.ResourceNotFoundException;
 import com.springApp.mapper.StudentMapper;
 import com.springApp.repositories.CareerRepository;
+import com.springApp.repositories.RolRepository;
 import com.springApp.repositories.StudentRepository;
 import com.springApp.repositories.UserRepository;
 import com.springApp.services.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,10 +28,11 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
-    private StudentMapper studentMapper;
+    private final StudentMapper studentMapper;
     private final StudentRepository studentRepository;
-    private final UserRepository userRepository;
+    private final RolRepository rolRepository;
     private final CareerRepository careerRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -43,9 +48,6 @@ public class StudentServiceImpl implements StudentService {
             throw new DuplicateResourceException("Ya existe un estudiante con el email: " + dto.getEmail());
         }
 
-        // Obtener usuario
-        UserEntity user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
 
         // Obtener carrera si se proporciona
         CareerEntity career = null;
@@ -54,6 +56,17 @@ public class StudentServiceImpl implements StudentService {
                     .orElseThrow(() -> new ResourceNotFoundException("Carrera no encontrada"));
         }
 
+        // Crear el usuario desde el DTO
+        UserEntity user= new UserEntity();
+        user.setUsername(dto.getUser().getUsername());
+        user.setPassword(passwordEncoder.encode(dto.getUser().getPassword()));
+        user.setEmail(dto.getEmail());
+        user.setState(UserState.ACTIVE);
+        RolEntity rol = rolRepository.findById(dto.getUser().getRoles().getRolId())
+                .orElseThrow(() -> new ResourceNotFoundException("Rol no encontrado"));
+        user.setRoles(rol);
+
+        // Crear la entidad Student
         StudentEntity student = new StudentEntity();
         student.setUser(user);
         student.setCarnet(dto.getCarnet());
@@ -123,20 +136,14 @@ public class StudentServiceImpl implements StudentService {
     @Override
     @Transactional(readOnly = true)
     public List<StudentResponseDTO> getAllStudents() {
-        return List.of();
-    }
-
-    @Override
-    public List<StudentResponseDTO> getStudentsByCareer(Long careerId) {
         return studentRepository.findAll().stream()
                 .map(studentMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<StudentResponseDTO> searchStudents(String search) {
-        return studentRepository.searchStudents(search).stream()
+    public List<StudentResponseDTO> getStudentsByCareer(Long careerId) {
+        return studentRepository.findAll().stream()
                 .map(studentMapper::toDTO)
                 .collect(Collectors.toList());
     }

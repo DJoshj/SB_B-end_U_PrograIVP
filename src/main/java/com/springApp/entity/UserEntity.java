@@ -1,6 +1,7 @@
 package com.springApp.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.springApp.entity.states.UserState;
 import jakarta.persistence.*;
@@ -50,9 +51,11 @@ public class UserEntity {
     private RolEntity roles;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private StudentEntity student;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private TeacherEntity teacher;
 
     @JsonProperty("creationDate")
