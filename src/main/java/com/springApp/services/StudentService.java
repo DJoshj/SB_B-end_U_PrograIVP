@@ -12,7 +12,6 @@ public interface StudentService {
     StudentResponseDTO getStudentByCarnet(String carnet);
     List<StudentResponseDTO> getAllStudents();
     List<StudentResponseDTO> getStudentsByCareer(Long careerId);
-    List<StudentResponseDTO> searchStudents(String search);
     void deleteStudent(Long id);
     Long countStudentsByCareer(Long careerId);
 }

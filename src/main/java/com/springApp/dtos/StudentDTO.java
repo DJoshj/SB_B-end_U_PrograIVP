@@ -14,8 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentDTO {
-    @NotNull(message = "El ID del usuario es requerido")
-    private Long userId;
+    private UserDTO user;
 
     @NotBlank(message = "El carnet es requerido")
     @Size(max = 25)

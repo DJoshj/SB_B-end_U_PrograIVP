@@ -13,8 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TeacherDTO {
-    @NotNull(message = "El ID del usuario es requerido")
-    private Long userId;
+    private UserDTO user;
 
     @NotBlank(message = "El código de docente es requerido")
     private String teacherCode;
@@ -30,5 +29,5 @@ public class TeacherDTO {
     private String email;
 
     @NotBlank(message = "La especialidad es requerida")
-    private String specialty;
+    private String speciality;
 }
