@@ -50,4 +50,12 @@ public class TeacherEntity {
     @OneToMany(mappedBy = "teacher")
     private List<SubjectAssignedEntity> subjectAssigned;
 
+    public TeacherEntity(String teacherCode, String names, String lastName, String email, String speciality, UserEntity user) {
+        this.teacherCode = teacherCode;
+        this.names = names;
+        this.lastName = lastName;
+        this.email = email;
+        this.speciality = speciality;
+        this.user = user;
+    }
 }

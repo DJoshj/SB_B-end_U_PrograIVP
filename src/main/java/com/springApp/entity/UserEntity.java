@@ -76,6 +76,13 @@ public class UserEntity {
         this.roles = roles;
     }
 
+    public UserEntity(String username, String password, UserState state, RolEntity roles) {
+        this.username = username;
+        this.password = password;
+        this.state = state;
+        this.roles = roles;
+    }
+
     // =================================
     // Métodos de persistencia automática
     // =================================

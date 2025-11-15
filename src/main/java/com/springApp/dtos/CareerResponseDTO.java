@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class CareerResponseDTO {
     private Long careerId;
     private String nameCareer;
+    private Integer plan;
     private String faculty;
 }

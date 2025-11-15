@@ -1,6 +1,7 @@
 package com.springApp.services.impl;
 
 import com.itextpdf.io.font.constants.StandardFonts;
+import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.font.PdfFont;
@@ -9,10 +10,7 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
-import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Paragraph;
-import com.itextpdf.layout.element.Table;
-import com.itextpdf.layout.element.Text;
+import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import com.springApp.config.FileStorageConfig;
@@ -59,7 +57,7 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
             document.add(new Paragraph("\n"));
 
             // ========== TÍTULO ==========
-            Paragraph title = new Paragraph("Comprobante de materias inscritas para el ciclo: 02-2025")
+            Paragraph title = new Paragraph("Comprobante de materias inscritas para el ciclo: 01-2026")
                     .setFont(bold)
                     .setFontSize(12)
                     .setTextAlignment(TextAlignment.CENTER)
@@ -123,12 +121,12 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
         // Logo (si existe)
         try {
             // Aquí debes colocar la ruta de tu logo
-            // Image logo = new Image(ImageDataFactory.create("src/main/resources/static/images/logo-utec.png"));
-            // logo.setWidth(80);
-            // headerTable.addCell(new Cell().add(logo).setBorder(Border.NO_BORDER));
+            Image logo = new Image(ImageDataFactory.create("src/main/resources/static/img/img.png"));
+            logo.setWidth(80);
+            headerTable.addCell(new Cell().add(logo).setBorder(Border.NO_BORDER));
 
             // Si no tienes logo, deja la celda vacía
-            headerTable.addCell(new Cell().setBorder(Border.NO_BORDER));
+            //headerTable.addCell(new Cell().setBorder(Border.NO_BORDER));
         } catch (Exception e) {
             log.warn("No se pudo cargar el logo");
             headerTable.addCell(new Cell().setBorder(Border.NO_BORDER));
@@ -136,8 +134,8 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
 
         // Texto del encabezado
         Paragraph headerText = new Paragraph()
-                .add(new Text("Universidad Tecnológica\n").setFont(bold).setFontSize(16).setFontColor(new DeviceRgb(139, 0, 0)))
-                .add(new Text("de El Salvador").setFont(bold).setFontSize(14).setFontColor(new DeviceRgb(139, 0, 0)))
+                .add(new Text("Universidad Latinoamérica\n").setFont(bold).setFontSize(16).setFontColor(new DeviceRgb(139, 0, 0)))
+                .add(new Text("de Educación Superior").setFont(bold).setFontSize(14).setFontColor(new DeviceRgb(139, 0, 0)))
                 .setTextAlignment(TextAlignment.CENTER);
 
         headerTable.addCell(new Cell().add(headerText).setBorder(Border.NO_BORDER));
@@ -157,9 +155,10 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
     private void addSubjectsTable(Document document, InscriptionReportDTO reportData,
                                   PdfFont bold, PdfFont regular) {
         // Crear tabla de materias
-        float[] columnWidths = {10, 35, 10, 10, 20, 15};
+        float[] columnWidths = {10, 25, 10, 10, 15, 15, 15};
         Table table = new Table(UnitValue.createPercentArray(columnWidths));
         table.setWidth(UnitValue.createPercentValue(100));
+
 
         // Encabezados
         String[] headers = {"Código", "Materia", "Sección", "Matrícula", "Días", "Hora", "Aula"};
@@ -177,7 +176,7 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
             table.addCell(createCell(subject.getCode(), regular, TextAlignment.CENTER));
             table.addCell(createCell(subject.getName(), regular, TextAlignment.LEFT));
             table.addCell(createCell(subject.getSection(), regular, TextAlignment.CENTER));
-            table.addCell(createCell(subject.getMatricula().toString(), regular, TextAlignment.CENTER));
+            table.addCell(createCell("1", regular, TextAlignment.CENTER));                      ///NUMERO DE MATRICULA
             table.addCell(createCell(subject.getDays(), regular, TextAlignment.CENTER));
             table.addCell(createCell(subject.getSchedule(), regular, TextAlignment.CENTER));
             table.addCell(createCell(subject.getClassroom(), regular, TextAlignment.CENTER));
@@ -209,7 +208,7 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
         Paragraph notes = new Paragraph()
                 .add(new Text("Para consultas de notas, correo institucional, documentos de clase ingrese al portal educativo: ")
                         .setFont(regular).setFontSize(8))
-                .add(new Text("https://portal.utec.edu.sv\n").setFont(regular).setFontSize(8).setFontColor(ColorConstants.BLUE))
+                .add(new Text("https://portal.ulaes.edu.sv\n").setFont(regular).setFontSize(8).setFontColor(ColorConstants.BLUE))
                 .add(new Text("El correo que la universidad le proporciona como estudiante es exclusivamente de uso institucional.")
                         .setFont(regular).setFontSize(8).setBold());
 

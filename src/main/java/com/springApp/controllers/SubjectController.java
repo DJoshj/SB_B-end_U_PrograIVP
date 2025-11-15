@@ -49,11 +49,6 @@ public class SubjectController {
         return ResponseEntity.ok(subjectService.getSubjectsByCareer(careerId));
     }
 
-    @GetMapping("/search/{subject}")
-    public ResponseEntity<List<SubjectResponseDTO>> searchSubjects(@PathVariable String subject) {
-        return ResponseEntity.ok(subjectService.searchSubjects(subject));
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSubject(@PathVariable Long id) {
         subjectService.deleteSubject(id);

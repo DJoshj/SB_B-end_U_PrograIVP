@@ -22,6 +22,8 @@ public class CareerEntity {
     @Column(nullable = false, length = 100)
     private String nameCareer;
 
+    private Integer plan;
+
     @NotBlank(message = "The faculty can't be empty")
     @Column(nullable = false, length = 100)
     private String faculty;
@@ -33,4 +35,15 @@ public class CareerEntity {
     @OneToMany(mappedBy = "career")
     private List<SubjectEntity> subject;
 
+    public CareerEntity(String nameCareer, Integer plan, String faculty) {
+        this.nameCareer = nameCareer;
+        this.plan = plan;
+        this.faculty = faculty;
+    }
+
+    public CareerEntity(Long careerId, String nameCareer, String faculty) {
+        this.careerId = careerId;
+        this.nameCareer = nameCareer;
+        this.faculty = faculty;
+    }
 }

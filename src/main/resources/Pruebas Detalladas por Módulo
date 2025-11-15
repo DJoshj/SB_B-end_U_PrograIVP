@@ -128,7 +128,16 @@
       "subjectCode": "PROG4",
       "name": "Programación IV",
       "valueUnits": 4,
-      "careerId": 1
+      "careerId": 2
+    }
+
+    - Put Actualizar materia
+    http://localhost:8080/api/v1/subjects//update/{id}
+    {
+      "subjectCode": "BADA2",
+      "name": "Bases de Datos II",
+      "valueUnits": 4,
+      "careerId": 2
     }
 
     - GET Materias por Carrera
@@ -182,8 +191,10 @@
 
 7️⃣ CLASSROOMS (Aulas)
     - Ejemplos de aulas:
-      {"name": "EN LÍNEA", "ability": 50, "building": "Virtual"}
-      {"name": "BJ-AB 3", "ability": 35, "building": "Edificio B"}
+      {"name": "EN LÍNEA", "ability": 50, "building": "teams"}
+      {"name": "BJ- 301", "ability": 35, "building": "Benito Juarez"}
+      {"name": "BJ-LAB 3", "ability": 30, "building": "Benito Juarez"}
+      {"name": "FM-405", "ability": 40, "building": "Francisco Morazan"}
 
     - POST Crear Aula
     POST http://localhost:8080/api/v1/classrooms/create
@@ -210,14 +221,72 @@
     Content-Type: application/json
 
     {
-      "subjectId": 1,
-      "teacherId": 1,
-      "periodId": 1,
-      "scheduleId": 1,
-      "classroomId": 1,
-      "maximumCapacity": 30,
+      "subjectId": 1, //progra 1
+      "teacherId": 1,   //T0001
+      "periodId": 3,    //Ciclo II
+      "scheduleId": 1,  //Lunes_Miércoles
+      "classroomId": 1, //EN LÍNEA
+      "maximumCapacity": 120,
       "section": "A"
     }
+
+    response->
+    {
+        "subjectAssignedId": 23,
+        "subjectId": 1,
+        "subjectCode": "PROG1",
+        "subjectName": "Programación I",
+        "teacherId": 1,
+        "teacherName": "Kaisy Alejandra Cardona Ramos",
+        "teacherCode": "T0001",
+        "periodId": 3,
+        "periodName": "Ciclo II",
+        "scheduleId": 1,
+        "scheduleDays": "Lunes_Miércoles",
+        "scheduleTime": "06:30-08:30",
+        "classroomId": 1,
+        "classroomName": "EN LÍNEA",
+        "building": "Teams",
+        "section": "A",
+        "availableSpace": 120,
+        "maximumCapacity": 120,
+        "enrolledStudents": 0
+    }
+
+    actualizar
+    http://localhost:8080/api/v1/subject-assignments/update/23
+    {
+          "subjectId": 1,
+          "teacherId": 1,
+          "periodId": 3,
+          "scheduleId": 1,
+          "classroomId": 1,
+          "maximumCapacity": 124,
+          "section": "A"
+    }
+    response
+    {
+        "subjectAssignedId": 23,
+        "subjectId": 1,
+        "subjectCode": "PROG1",
+        "subjectName": "Programación I",
+        "teacherId": 1,
+        "teacherName": "Kaisy Alejandra Cardona Ramos",
+        "teacherCode": "T0001",
+        "periodId": 3,
+        "periodName": "Ciclo II",
+        "scheduleId": 1,
+        "scheduleDays": "Lunes_Miércoles",
+        "scheduleTime": "06:30-08:30",
+        "classroomId": 1,
+        "classroomName": "EN LÍNEA",
+        "building": "Teams",
+        "section": "A",
+        "availableSpace": 124,
+        "maximumCapacity": 124,
+        "enrolledStudents": 0
+    }
+
 
     - GET Materias Disponibles por Periodo
     GET http://localhost:8080/api/v1/subject-assignments/available/1
@@ -239,8 +308,8 @@
     Content-Type: application/json
 
     {
-      "studentId": 1,
-      "periodId": 1,
+      "studentId": 12,  //ing. Sistemas
+      "periodId": 3,   //ciclo II
       "subjectsAssigned": [1, 2, 3, 4]
     }
     Response 200 OK:

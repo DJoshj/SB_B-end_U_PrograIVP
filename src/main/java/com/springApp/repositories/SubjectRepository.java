@@ -17,11 +17,6 @@ public interface SubjectRepository extends JpaRepository<SubjectEntity, Long> {
 
     boolean existsBySubjectCode(String subjectCode);
 
-    @Query("SELECT s FROM SubjectEntity s WHERE " +
-            "LOWER(s.name) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
-            "LOWER(s.subjectCode) LIKE LOWER(CONCAT('%', :search, '%'))")
-    List<SubjectEntity> searchSubjects(@Param("search") String search);
-
     @Query("SELECT s FROM SubjectEntity s WHERE s.valueUnits = :units")
     List<SubjectEntity> findByValueUnits(@Param("units") Integer units);
 

@@ -3,6 +3,7 @@ package com.springApp.controllers;
 import com.springApp.dtos.SubjectAssignedDTO;
 import com.springApp.dtos.SubjectAssignedResponseDTO;
 import com.springApp.dtos.SubjectAssignedWithInscriptionsDTO;
+import com.springApp.dtos.SubjectResponseDTO;
 import com.springApp.services.SubjectAssignedService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class SubjectAssignedController {
     /**
      * Asignar una materia a un docente
      */
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<?> assignSubject(@Valid @RequestBody SubjectAssignedDTO dto) {
         try {
             SubjectAssignedResponseDTO response = subjectAssignedService.assignSubject(dto);
@@ -30,6 +31,26 @@ public class SubjectAssignedController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    /**
+     * Actualizar una materia asignada existente
+     */
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateSubjectAssignment(
+            @PathVariable Long id,
+            @Valid @RequestBody SubjectAssignedDTO dto) {
+        try {
+            SubjectAssignedResponseDTO response = subjectAssignedService.updateSubjectAssignment(id, dto);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<SubjectAssignedResponseDTO>> getAllSubjectAssignments() {
+        return ResponseEntity.ok(subjectAssignedService.getAllSubjectAssignments());
     }
 
     /**

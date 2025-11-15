@@ -20,14 +20,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SubjectAssignedServiceImpl implements SubjectAssignedService {
     //injection of dependency
-    private SubjectAssignedResponseMapper subjectAssignedResponse;
-    private SubjectAssignedWithInscriptionsMapper assignedWithInscriptionsMapper;
+    private final SubjectAssignedResponseMapper subjectAssignedResponse;
+    private final SubjectAssignedWithInscriptionsMapper assignedWithInscriptionsMapper;
     private final SubjectAssignedRepository subjectAssignedRepository;
     private final SubjectRepository subjectRepository;
     private final TeacherRepository teacherRepository;
     private final PeriodRepository periodRepository;
     private final ScheduleRepository scheduleRepository;
     private final ClassroomRepository classroomRepository;
+    private final InscriptionRepository inscriptionRepository;
 
     @Override
     @Transactional
@@ -105,6 +106,115 @@ public class SubjectAssignedServiceImpl implements SubjectAssignedService {
     }
 
     @Override
+    @Transactional
+    public SubjectAssignedResponseDTO updateSubjectAssignment(Long id, SubjectAssignedDTO dto) {
+        log.info("Actualizando asignación de materia ID: {}", id);
+
+        // Validar que la asignación existe
+        SubjectAssignedEntity subjectAssigned = subjectAssignedRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Materia asignada no encontrada con ID: " + id));
+
+        // Validar que la materia existe
+        SubjectEntity subject = subjectRepository.findById(dto.getSubjectId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Materia no encontrada con ID: " + dto.getSubjectId()));
+
+        // Validar que el docente existe
+        TeacherEntity teacher = teacherRepository.findById(dto.getTeacherId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Docente no encontrado con ID: " + dto.getTeacherId()));
+
+        // Validar que el periodo existe
+        PeriodEntity period = periodRepository.findById(dto.getPeriodId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Periodo no encontrado con ID: " + dto.getPeriodId()));
+
+        // Validar que el horario existe
+        ScheduleEntity schedule = scheduleRepository.findById(dto.getScheduleId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Horario no encontrado con ID: " + dto.getScheduleId()));
+
+        // Validar que el aula existe
+        ClassroomEntity classroom = classroomRepository.findById(dto.getClassroomId())
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Aula no encontrada con ID: " + dto.getClassroomId()));
+
+        // Validar que la capacidad no exceda la del aula
+        if (dto.getMaximumCapacity() > classroom.getAbility()) {
+            throw new BusinessException(
+                    "La capacidad máxima (" + dto.getMaximumCapacity() +
+                            ") excede la capacidad del aula (" + classroom.getAbility() + ")");
+        }
+
+        // Validar conflicto de horario del docente (excluyendo la asignación actual)
+        List<SubjectAssignedEntity> teacherAssignments = subjectAssignedRepository
+                .findByTeacherAndPeriod(dto.getTeacherId(), dto.getPeriodId());
+
+        boolean hasConflict = teacherAssignments.stream()
+                .filter(sa -> !sa.getIdSubjectAssigned().equals(id))
+                .anyMatch(sa -> sa.getSchedule().getScheduleId().equals(dto.getScheduleId()));
+
+        if (hasConflict) {
+            throw new BusinessException(
+                    "El docente ya tiene una clase asignada en este horario para este periodo");
+        }
+
+        // Validar conflicto de aula (excluyendo la asignación actual)
+        List<SubjectAssignedEntity> classroomAssignments = subjectAssignedRepository
+                .findByClassroomClassroomId(dto.getClassroomId());
+
+        boolean hasClassroomConflict = classroomAssignments.stream()
+                .filter(sa -> !sa.getIdSubjectAssigned().equals(id))
+                .filter(sa -> sa.getPeriod().getPeriodId().equals(dto.getPeriodId()))
+                .anyMatch(sa -> sa.getSchedule().getScheduleId().equals(dto.getScheduleId()));
+
+        if (hasClassroomConflict) {
+            throw new BusinessException(
+                    "El aula ya está ocupada en este horario para este periodo");
+        }
+
+        // Contar estudiantes inscritos actualmente
+        Long enrolledCount = inscriptionRepository.countActiveInscriptionsBySubjectAssigned(id);
+
+        // Validar que la nueva capacidad no sea menor que los inscritos actuales
+        if (dto.getMaximumCapacity() < enrolledCount.intValue()) {
+            throw new BusinessException(
+                    "No se puede reducir la capacidad máxima a " + dto.getMaximumCapacity() +
+                            " porque ya hay " + enrolledCount + " estudiantes inscritos");
+        }
+
+        // Actualizar campos
+        subjectAssigned.setSubject(subject);
+        subjectAssigned.setTeacher(teacher);
+        subjectAssigned.setPeriod(period);
+        subjectAssigned.setSchedule(schedule);
+        subjectAssigned.setClassroom(classroom);
+        subjectAssigned.setMaximumCapacity(dto.getMaximumCapacity());
+        subjectAssigned.setSection(dto.getSection());
+
+        // Recalcular cupo disponible
+        int newAvailableSpace = dto.getMaximumCapacity() - enrolledCount.intValue();
+        subjectAssigned.setAvailableSpace(newAvailableSpace);
+
+        SubjectAssignedEntity updated = subjectAssignedRepository.save(subjectAssigned);
+        log.info("Materia asignada actualizada: ID {}, nuevo cupo disponible: {}",
+                updated.getIdSubjectAssigned(), updated.getAvailableSpace());
+
+        return subjectAssignedResponse.toDTO(updated);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<SubjectAssignedResponseDTO> getAllSubjectAssignments() {
+        log.info("Obteniendo todas las materias asignadas");
+        List<SubjectAssignedEntity> subjects = subjectAssignedRepository.findAll();
+        return subjects.stream()
+                .map(subjectAssignedResponse::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public List<SubjectAssignedResponseDTO> getSubjectsByPeriod(Long periodId) {
         log.info("Obteniendo materias asignadas del periodo: {}", periodId);
@@ -138,6 +248,7 @@ public class SubjectAssignedServiceImpl implements SubjectAssignedService {
     @Transactional(readOnly = true)
     public SubjectAssignedWithInscriptionsDTO getSubjectAssignedWithInscriptions(Long id) {
         log.info("Obteniendo materia asignada con inscripciones, ID: {}", id);
+
         SubjectAssignedEntity subject = subjectAssignedRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Materia asignada no encontrada con ID: " + id));
@@ -187,6 +298,8 @@ public class SubjectAssignedServiceImpl implements SubjectAssignedService {
 
         subjectAssignedRepository.save(subject);
     }
+
+
 
     // ============================================
     // MÉTODOS PRIVADOS DE MAPEO
