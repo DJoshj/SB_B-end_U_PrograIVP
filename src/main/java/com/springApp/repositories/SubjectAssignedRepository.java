@@ -11,6 +11,7 @@ import java.util.List;
 @Repository
 public interface SubjectAssignedRepository extends JpaRepository<SubjectAssignedEntity, Long> {
     // ========== BÚSQUEDAS BÁSICAS ==========
+
     List<SubjectAssignedEntity> findByClassroomClassroomId(Long classroomId);
     List<SubjectAssignedEntity> findByScheduleScheduleId(Long scheduleId);
     List<SubjectAssignedEntity> findBySubjectSubjectId(Long subjectId);
@@ -22,6 +23,18 @@ public interface SubjectAssignedRepository extends JpaRepository<SubjectAssigned
     List<SubjectAssignedEntity> findByTeacherTeacherId(Long teacherId);
 
     // ========== VALIDACIONES DE CONFLICTOS ==========
+
+    @Query("""
+    SELECT sa 
+    FROM SubjectAssignedEntity sa
+    JOIN FETCH sa.subject
+    JOIN FETCH sa.teacher
+    JOIN FETCH sa.period
+    JOIN FETCH sa.schedule
+    JOIN FETCH sa.classroom
+    """)
+    List<SubjectAssignedEntity> findAllWithRelations();
+
     // Verificar si existe una asignación duplicada
     @Query("SELECT COUNT(sa) > 0 FROM SubjectAssignedEntity sa WHERE " +
             "sa.subject.subjectId = :subjectId AND " +

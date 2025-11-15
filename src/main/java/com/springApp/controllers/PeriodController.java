@@ -18,7 +18,7 @@ public class PeriodController {
     private PeriodService periodService;
 
     @PostMapping("/create")
-    public ResponseEntity<PeriodResponseDTO> createPeriod(@Valid @RequestBody PeriodDTO dto) {
+    public ResponseEntity<PeriodResponseDTO> createPeriod( @Valid @RequestBody PeriodDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(periodService.createPeriod(dto));
     }
 

@@ -58,7 +58,7 @@ public class StudentServiceImpl implements StudentService {
 
         // Crear el usuario desde el DTO
         UserEntity user= new UserEntity();
-        user.setUsername(dto.getUser().getUsername());
+        user.setUsername(dto.getCarnet().replace("-", "")); //username sera el nombre del carnet del estudiante
         user.setPassword(passwordEncoder.encode(dto.getUser().getPassword()));
         user.setEmail(dto.getEmail());
         user.setState(UserState.ACTIVE);

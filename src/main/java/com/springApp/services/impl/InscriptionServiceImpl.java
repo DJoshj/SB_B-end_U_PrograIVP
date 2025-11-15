@@ -194,8 +194,8 @@ public class InscriptionServiceImpl implements InscriptionService {
 
         log.info("✅ Inscripción individual completada: {}", saved.getInscriptionId());
 
-        //return mapToResponseDTO(saved);
-        return inscriptionMapper.toDTO(saved);
+        return mapToResponseDTO(saved);
+        //return inscriptionMapper.toDTO(saved);
     }
 
     @Override
@@ -238,7 +238,8 @@ public class InscriptionServiceImpl implements InscriptionService {
                 inscriptionRepository.findByStudentStudentId(studentId);
 
         return inscriptions.stream()
-                .map(inscriptionMapper::toDTO)
+                .map(this::mapToResponseDTO)
+                //.map(inscriptionMapper::toDTO)
                 .collect(Collectors.toList());
     }
 

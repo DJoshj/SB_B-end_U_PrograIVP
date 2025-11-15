@@ -3,6 +3,7 @@ package com.springApp.controllers;
 import com.springApp.dtos.SubjectAssignedDTO;
 import com.springApp.dtos.SubjectAssignedResponseDTO;
 import com.springApp.dtos.SubjectAssignedWithInscriptionsDTO;
+import com.springApp.dtos.SubjectResponseDTO;
 import com.springApp.services.SubjectAssignedService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class SubjectAssignedController {
     /**
      * Asignar una materia a un docente
      */
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<?> assignSubject(@Valid @RequestBody SubjectAssignedDTO dto) {
         try {
             SubjectAssignedResponseDTO response = subjectAssignedService.assignSubject(dto);
@@ -33,13 +34,33 @@ public class SubjectAssignedController {
     }
 
     /**
+     * Actualizar una materia asignada existente
+     */
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateSubjectAssignment(
+            @PathVariable Long id,
+            @Valid @RequestBody SubjectAssignedDTO dto) {
+        try {
+            SubjectAssignedResponseDTO response = subjectAssignedService.updateSubjectAssignment(id, dto);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<SubjectAssignedResponseDTO>> getAllSubjectAssignments() {
+        return ResponseEntity.ok(subjectAssignedService.getAllSubjectAssignments());
+    }
+
+    /**
             * Obtener materias por periodo
      */
     @GetMapping("/period/{periodId}")
     public ResponseEntity<List<SubjectAssignedResponseDTO>> getByPeriod(
             @PathVariable Long periodId) {
         List<SubjectAssignedResponseDTO> subjects =
-                subjectAssignedService.getSubjectsByPeriod(periodId);
+                subjectAssignedService.getSubjectsByPeriod(periodId );
         return ResponseEntity.ok(subjects);
     }
 

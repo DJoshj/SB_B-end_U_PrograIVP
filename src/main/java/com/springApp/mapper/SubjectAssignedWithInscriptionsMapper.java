@@ -1,23 +1,84 @@
 package com.springApp.mapper;
 
+import com.springApp.dtos.InscriptionSummaryDTO;
 import com.springApp.dtos.SubjectAssignedWithInscriptionsDTO;
+import com.springApp.entity.InscriptionsEntity;
 import com.springApp.entity.SubjectAssignedEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class SubjectAssignedWithInscriptionsMapper {
-    @Autowired
-    private ModelMapper modelMapper;
 
-    //convierte un dto a un objeto
-    public SubjectAssignedEntity toEntity(SubjectAssignedWithInscriptionsDTO subjectAssignedWithInscriptionsDTO){
-        return modelMapper.map(subjectAssignedWithInscriptionsDTO, SubjectAssignedEntity.class);
+
+    public SubjectAssignedWithInscriptionsDTO toDTO(SubjectAssignedEntity entity) {
+
+        SubjectAssignedWithInscriptionsDTO dto = new SubjectAssignedWithInscriptionsDTO();
+        dto.setSubjectAssignedId(entity.getIdSubjectAssigned());
+
+        // Datos de la materia
+        dto.setSubjectCode(entity.getSubject().getSubjectCode());
+        dto.setSubjectName(entity.getSubject().getName());
+
+        // Nombre completo del docente
+        dto.setTeacherName(
+                entity.getTeacher().getNames() + " " + entity.getTeacher().getLastName()
+        );
+
+        // Horario mostrado en texto
+        dto.setSchedule(
+                entity.getSchedule().getDays() + " " +
+                        entity.getSchedule().getSchedule()
+        );
+
+        // Aula
+        dto.setClassroom(entity.getClassroom().getName());
+
+        // Sección
+        dto.setSection(entity.getSection());
+
+        // Periodo
+        dto.setPeriodName(entity.getPeriod().getName());
+
+        // Espacios
+        dto.setMaximumCapacity(entity.getMaximumCapacity());
+        dto.setAvailableSpace(entity.getAvailableSpace());
+
+        // ---- INSCRIPCIONES ----
+        if (entity.getInscriptions() != null) {
+            List<InscriptionSummaryDTO> inscriptionDTOs = entity.getInscriptions()
+                    .stream()
+                    .map(this::mapInscription)
+                    .toList();
+
+            dto.setInscriptions(inscriptionDTOs);
+        } else {
+            dto.setInscriptions(List.of());
+        }
+
+        return dto;
     }
 
-    //entidad a dto
-    public SubjectAssignedWithInscriptionsDTO toDTO(SubjectAssignedEntity subjectAssigned) {
-        return modelMapper.map(subjectAssigned, SubjectAssignedWithInscriptionsDTO.class);
+    // Conversión manual de Inscription → InscriptionSummaryDTO
+    private InscriptionSummaryDTO mapInscription(InscriptionsEntity ins) {
+        InscriptionSummaryDTO dto = new InscriptionSummaryDTO();
+
+        dto.setInscriptionId(ins.getInscriptionId());
+        dto.setStudentId(ins.getStudent().getStudentId());
+        dto.setStudentName(ins.getStudent().getName() + " " + ins.getStudent().getLastname());
+        dto.setStudentCarnet(ins.getStudent().getCarnet());
+        dto.setStudentEmail(ins.getStudent().getEmail());
+        dto.setInscriptionDate(ins.getInscriptionDate().toString());
+        dto.setState(ins.getState().name());
+
+        return dto;
     }
 }
+
+
+

@@ -20,7 +20,7 @@ public class InscriptionRequestDTO {
     private Long studentId;
 
     @NotNull(message = "El ID de la materia asignada es requerido")
-    @JsonProperty("subjectAssignedId")
+    @JsonProperty("subjectsAssigned")
     private List<Long> subjectsAssigned; // lista de IDs de materias asignadas
 
     @NotNull(message = "El ID del periodo es requerido")

@@ -116,14 +116,14 @@ public class InscriptionReportServiceImpl implements InscriptionReportService {
                 .studentName(student.getName() + " " + student.getLastname())
                 .carnet(student.getCarnet())
                 .career(student.getCareer() != null ? student.getCareer().getNameCareer() : "N/A")
-                .plan(period.getYear().toString())
+                .plan(student.getCareer().getPlan().toString())
                 .inscriptionKey(inscriptionKey)
                 .inscriptionDate(inscriptions.get(0).getInscriptionDate())
                 .classStartDate(period.getStartDate())
                 .subjects(subjects)
-                .facultyContactEmail("edwin.callejas@utec.edu.sv")
-                .virtualClassroomContact("yanira.ramirez@utec.edu.sv")
-                .academicAdministrationContact("academica.enlinea@utec.edu.sv")
+                .facultyContactEmail("edwin.Salomon@ulaes.edu.sv")
+                .virtualClassroomContact("yanira.Rivas@ulaes.edu.sv")
+                .academicAdministrationContact("academica.enlinea@ulaes.edu.sv")
                 .build();
     }
 
@@ -142,11 +142,20 @@ public class InscriptionReportServiceImpl implements InscriptionReportService {
     }
 
     private String generateInscriptionKey(String carnet) {
-        // Generar clave única basada en carnet y timestamp
+
         String timestamp = String.valueOf(System.currentTimeMillis());
-        String hash = String.format("%08X", (carnet + timestamp).hashCode());
+
+        // Generar hash hexadecimal largo (mínimo 16 chars)
+        String hash = Integer.toHexString((carnet + timestamp).hashCode()).toUpperCase();
+
+        // Asegurar longitud mínima de 9
+        while (hash.length() < 9) {
+            hash += "A"; // relleno simple
+        }
+
         return hash.substring(0, 8) + "-" + hash.substring(8, 9);
     }
+
 
     private String generateFileName(String carnet, String periodName) {
         String sanitizedPeriod = periodName.replaceAll("[^a-zA-Z0-9]", "_");
@@ -157,12 +166,12 @@ public class InscriptionReportServiceImpl implements InscriptionReportService {
     private void sendReportEmail(String toEmail, String studentName,
                                  byte[] pdfContent, String fileName) {
         try {
-            String subject = "Comprobante de Inscripción - UTEC";
+            String subject = "Comprobante de Inscripción - ULAES";
 
             String body = String.format(
                     "<html>" +
                             "<body style='font-family: Arial, sans-serif;'>" +
-                            "<h2 style='color: #8B0000;'>Universidad Tecnológica de El Salvador</h2>" +
+                            "<h2 style='color: #8B0000;'>Universidad Latinoamericana de Educación Superior</h2>" +
                             "<p>Estimado/a <strong>%s</strong>,</p>" +
                             "<p>Adjunto encontrará su comprobante de inscripción para el ciclo actual.</p>" +
                             "<p>Este documento contiene:</p>" +
@@ -174,14 +183,14 @@ public class InscriptionReportServiceImpl implements InscriptionReportService {
                             "<p><strong>Importante:</strong> Conserve este documento para futuras referencias.</p>" +
                             "<p>Para cualquier consulta, puede contactar a:</p>" +
                             "<ul>" +
-                            "<li>Administración Académica: academica.enlinea@utec.edu.sv</li>" +
-                            "<li>Portal Educativo: <a href='https://portal.utec.edu.sv'>https://portal.utec.edu.sv</a></li>" +
+                            "<li>Administración Académica: academica.enlinea@ulaes.edu.sv</li>" +
+                            "<li>Portal Educativo: <a href='https://portal.ulaes.edu.sv'>https://portal.ulaes.edu.sv</a></li>" +
                             "</ul>" +
                             "<p>Fecha de inicio de clases: Consulte el calendario académico.</p>" +
                             "<br>" +
                             "<p>Atentamente,</p>" +
                             "<p><strong>Administración Académica</strong><br>" +
-                            "Universidad Tecnológica de El Salvador</p>" +
+                            "Universidad Latinoamericana de Educación Superior</p>" +
                             "</body>" +
                             "</html>",
                     studentName

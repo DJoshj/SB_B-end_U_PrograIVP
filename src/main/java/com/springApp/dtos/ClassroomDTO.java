@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClassroomDTO {
-    @NotBlank(message = "El nombre del aula es requerido")
+    @NotBlank(message = " El nombre del aula es requerido")
     private String name;
 
     @NotNull(message = "La capacidad es requerida")

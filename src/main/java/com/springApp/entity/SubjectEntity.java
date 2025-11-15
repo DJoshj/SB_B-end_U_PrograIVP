@@ -27,7 +27,6 @@ public class SubjectEntity {
     @Column(nullable = false, length = 100)
     private String name;
 
-    @NotBlank
     @Column(nullable = false)
     private Integer valueUnits;
 
@@ -38,4 +37,10 @@ public class SubjectEntity {
     @OneToMany(mappedBy = "subject")
     private List<SubjectAssignedEntity> subjectAssigned;
 
+    public SubjectEntity(String subjectCode, String name, Integer valueUnits, CareerEntity career) {
+        this.subjectCode = subjectCode;
+        this.name = name;
+        this.valueUnits = valueUnits;
+        this.career = career;
+    }
 }

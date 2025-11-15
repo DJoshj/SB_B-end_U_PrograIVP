@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClassroomResponseDTO {
+public class  ClassroomResponseDTO {
     private Integer classroomId;
     private String name;
     private Integer ability;

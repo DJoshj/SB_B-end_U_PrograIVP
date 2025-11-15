@@ -22,7 +22,6 @@ public class ClassroomEntity {
     @Column(nullable = false, length = 50)
     private String name;
 
-    @NotBlank
     private Integer ability;
 
     @NotBlank(message = "Enter a building")
@@ -32,4 +31,9 @@ public class ClassroomEntity {
     @OneToMany(mappedBy = "classroom")
     private List<SubjectAssignedEntity> subjectAssigned;
 
+    public ClassroomEntity(String name, Integer ability, String building) {
+        this.name = name;
+        this.ability = ability;
+        this.building = building;
+    }
 }

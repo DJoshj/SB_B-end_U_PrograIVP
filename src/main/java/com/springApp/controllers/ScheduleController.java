@@ -18,7 +18,7 @@ public class ScheduleController {
     private ScheduleService scheduleService;
 
     @PostMapping("/create")
-    public ResponseEntity<ScheduleResponseDTO> createSchedule(@Valid @RequestBody ScheduleDTO dto) {
+    public ResponseEntity<ScheduleResponseDTO> createSchedule(@Valid  @RequestBody ScheduleDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(scheduleService.createSchedule(dto));
     }
 

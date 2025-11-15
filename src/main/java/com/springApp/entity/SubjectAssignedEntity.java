@@ -38,11 +38,9 @@ public class SubjectAssignedEntity {
     @JoinColumn(name = "id_classroom", nullable = false)
     private ClassroomEntity classroom;
 
-    @NotBlank(message = "Enter a number maximum of student")
     @Column(name = "maximum_capacity", nullable = false)
     private Integer maximumCapacity;
 
-    @NotBlank(message = "Enter an available space")
     @Column(name = "available_space", nullable = false)
     private Integer availableSpace;
 
@@ -72,4 +70,14 @@ public class SubjectAssignedEntity {
         }
     }
 
+    public SubjectAssignedEntity(SubjectEntity subject, TeacherEntity teacher, PeriodEntity period, ScheduleEntity schedule, ClassroomEntity classroom, Integer maximumCapacity, Integer availableSpace, String section) {
+        this.subject = subject;
+        this.teacher = teacher;
+        this.period = period;
+        this.schedule = schedule;
+        this.classroom = classroom;
+        this.maximumCapacity = maximumCapacity;
+        this.availableSpace = availableSpace;
+        this.section = section;
+    }
 }

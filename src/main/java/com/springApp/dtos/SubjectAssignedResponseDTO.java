@@ -40,7 +40,7 @@ public class SubjectAssignedResponseDTO {
     private String periodName;
 
     @JsonProperty("scheduleId")
-    private Integer scheduleId;
+    private Long scheduleId;
 
     @JsonProperty("scheduleDays")
     private String scheduleDays;
