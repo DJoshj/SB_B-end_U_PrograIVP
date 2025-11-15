@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ✅ habilitar CORS
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/index").permitAll();
+                    auth.requestMatchers("/index", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/api-docs/**").permitAll();
                     auth.anyRequest().authenticated();
                 })
                 .sessionManagement(session -> {
@@ -91,7 +91,4 @@ public class SecurityConfig {
                 .passwordEncoder(passwordEncoder);
         return authentication.build();
     }
-
-
-
 }
