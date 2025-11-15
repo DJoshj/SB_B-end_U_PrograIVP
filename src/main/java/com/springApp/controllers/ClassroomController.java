@@ -18,7 +18,7 @@ public class ClassroomController {
     private ClassroomService classroomService;
 
     @PostMapping("/create")
-    public ResponseEntity<ClassroomResponseDTO> createClassroom(@Valid @RequestBody ClassroomDTO dto) {
+    public ResponseEntity<ClassroomResponseDTO> createClassroom (@Valid @RequestBody ClassroomDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).
                 body(classroomService.createClassroom(dto));
     }

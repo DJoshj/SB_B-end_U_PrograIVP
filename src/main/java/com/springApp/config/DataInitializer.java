@@ -63,7 +63,7 @@ public class DataInitializer implements CommandLineRunner {
             logger.info("✅ Roles Created Successfully::::Mysql");
             logger.info("📊 Total roles: " + rolRepository.count());
         } else {
-            logger.info("ℹ️ DB already contains Roles. Total roles: " + rolRepository.count());
+            logger.info("ℹ️ DB already contains Roles. Total  roles: " + rolRepository.count());
         }
 
         /*========================

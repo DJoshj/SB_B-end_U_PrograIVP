@@ -60,7 +60,7 @@ public class SubjectAssignedController {
     public ResponseEntity<List<SubjectAssignedResponseDTO>> getByPeriod(
             @PathVariable Long periodId) {
         List<SubjectAssignedResponseDTO> subjects =
-                subjectAssignedService.getSubjectsByPeriod(periodId);
+                subjectAssignedService.getSubjectsByPeriod(periodId );
         return ResponseEntity.ok(subjects);
     }
 

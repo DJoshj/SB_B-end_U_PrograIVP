@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CareerResponseDTO {
+public class CareerResponseDTO  {
     private Long careerId;
     private String nameCareer;
     private Integer plan;

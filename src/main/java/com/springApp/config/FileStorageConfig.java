@@ -20,7 +20,7 @@ public class FileStorageConfig {
         if (!directory.exists()) {
             boolean created = directory.mkdirs();
             if (created) {
-                System.out.println("Directorio de PDFs creado: " + pdfStoragePath);
+                System.out.println("Directorio  de PDFs creado: " + pdfStoragePath);
             }
         }
     }

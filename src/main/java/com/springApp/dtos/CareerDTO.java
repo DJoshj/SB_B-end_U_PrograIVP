@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CareerDTO {
-    @NotBlank(message = "El nombre de la carrera es requerido")
+    @NotBlank(message = "El nombre de la carrera es  requerido")
     private String nameCareer;
 
     private Integer plan;
