@@ -55,4 +55,14 @@ public class StudentEntity {
     @OneToMany(mappedBy = "student")
     private List<InscriptionsEntity> inscriptions;
 
+    public StudentEntity(String carnet, String name, String lastname, String email, String phone, String address, CareerEntity career, UserEntity user) {
+        this.carnet = carnet;
+        this.name = name;
+        this.lastname = lastname;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.career = career;
+        this.user = user;
+    }
 }

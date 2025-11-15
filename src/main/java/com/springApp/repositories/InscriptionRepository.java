@@ -61,7 +61,7 @@ public interface InscriptionRepository extends JpaRepository<InscriptionsEntity,
     @Query("SELECT COUNT(i) FROM InscriptionsEntity i WHERE " +
             "i.subjectAssigned.idSubjectAssigned = :subjectAssignedId AND " +
             "i.state = 'ACTIVE'")
-    Long countActiveInscriptionsBySubjectAssigned(@Param("subjectAssignedId") Integer subjectAssignedId);
+    Long countActiveInscriptionsBySubjectAssigned(@Param("subjectAssignedId") Long subjectAssignedId);
 
     @Query("SELECT COUNT(i) FROM InscriptionsEntity i WHERE " +
             "i.student.studentId = :studentId AND " +

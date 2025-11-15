@@ -19,7 +19,7 @@ public class SubjectController {
     private  SubjectService subjectService;
 
     @PostMapping("/create")
-    public ResponseEntity<SubjectResponseDTO> createSubject(@Valid @RequestBody SubjectDTO dto) {
+    public ResponseEntity<SubjectResponseDTO> createSubject(@Valid @RequestBody SubjectDTO dto ) {
         return ResponseEntity.status(HttpStatus.CREATED).body(subjectService.createSubject(dto));
     }
 
@@ -47,11 +47,6 @@ public class SubjectController {
     @GetMapping("/career/{careerId}")
     public ResponseEntity<List<SubjectResponseDTO>> getSubjectsByCareer(@PathVariable Long careerId) {
         return ResponseEntity.ok(subjectService.getSubjectsByCareer(careerId));
-    }
-
-    @GetMapping("/search/{subject}")
-    public ResponseEntity<List<SubjectResponseDTO>> searchSubjects(@PathVariable String subject) {
-        return ResponseEntity.ok(subjectService.searchSubjects(subject));
     }
 
     @DeleteMapping("/{id}")

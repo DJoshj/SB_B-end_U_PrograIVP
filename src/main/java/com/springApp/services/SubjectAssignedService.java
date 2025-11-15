@@ -15,6 +15,20 @@ public interface SubjectAssignedService {
     SubjectAssignedResponseDTO assignSubject(SubjectAssignedDTO dto);
 
     /**
+     * Actualiza una asignación de materia existente
+     * @param id ID de la materia asignada
+     * @param dto Datos actualizados de la asignación
+     * @return DTO con la información actualizada
+     */
+    SubjectAssignedResponseDTO updateSubjectAssignment(Long id, SubjectAssignedDTO dto);
+
+    /**
+     * Obtiene todas las materias asignadas
+     * @return Lista de todas las materias asignadas
+     */
+    List<SubjectAssignedResponseDTO> getAllSubjectAssignments();
+
+    /**
      * Obtiene todas las materias asignadas en un periodo
      * @param periodId ID del periodo
      * @return Lista de materias asignadas
@@ -62,4 +76,6 @@ public interface SubjectAssignedService {
      * @param increase true para aumentar, false para disminuir
      */
     void updateAvailableSpace(Long subjectAssignedId, boolean increase);
+
+
 }

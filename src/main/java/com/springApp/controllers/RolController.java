@@ -21,7 +21,7 @@ public class RolController {
     private UserMapper userMapper;
 
     @PostMapping("/create")
-    public ResponseEntity<?> createRol(@RequestBody RolDTO rolDTO){
+    public ResponseEntity<?> createRol(@RequestBody  RolDTO rolDTO){
         try{
             RolDTO rolCreated = rolService.createRol(rolDTO);
             return ResponseEntity.ok(rolCreated);

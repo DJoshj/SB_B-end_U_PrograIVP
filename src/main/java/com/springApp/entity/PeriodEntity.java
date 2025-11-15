@@ -45,4 +45,11 @@ public class PeriodEntity {
     @OneToMany(mappedBy = "period")
     private List<InscriptionsEntity> inscriptions;
 
+    public PeriodEntity(String name, Integer year, LocalDate startDate, LocalDate endDate, String schedule) {
+        this.name = name;
+        this.year = year;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.schedule = schedule;
+    }
 }

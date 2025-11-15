@@ -12,6 +12,5 @@ public interface SubjectService {
     SubjectResponseDTO getSubjectByCode(String subjectCode);
     List<SubjectResponseDTO> getAllSubjects();
     List<SubjectResponseDTO> getSubjectsByCareer(Long careerId);
-    List<SubjectResponseDTO> searchSubjects(String search);
     void deleteSubject(Long id);
 }

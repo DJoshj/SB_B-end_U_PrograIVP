@@ -12,7 +12,7 @@ public class AppConfigController {
     private final ExternalizedConfigurations config;
 
     @Autowired
-    public AppConfigController(ExternalizedConfigurations config) {
+    public AppConfigController(ExternalizedConfigurations config ) {
         this.config = config;
     }
 

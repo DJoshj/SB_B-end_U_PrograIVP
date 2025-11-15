@@ -19,7 +19,7 @@ public class UserController {
     @Autowired
     private UserService userService;
     @Autowired
-    private UserMapper userMapper;
+    private UserMapper  userMapper;
 
     @PostMapping("/create/{rolId}")
     public ResponseEntity<?> createUser(

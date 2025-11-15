@@ -29,7 +29,7 @@ public class ReportController {
      * Descarga un reporte PDF generado
      */
     @GetMapping("/download/{fileName}")
-    public ResponseEntity<Resource> downloadReport(@PathVariable String fileName) {
+    public ResponseEntity<Resource> downloadReport (@PathVariable String fileName) {
         try {
             // Construir ruta del archivo
             String filePath = fileStorageConfig.getPdfStoragePath() + File.separator + fileName;

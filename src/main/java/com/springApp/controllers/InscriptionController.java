@@ -31,7 +31,7 @@ public class InscriptionController {
      *
      */
     @PostMapping
-    public ResponseEntity<?> enrollStudent(@Valid @RequestBody InscriptionRequestDTO dto) {
+    public ResponseEntity<?> enrollStudent(@Valid @RequestBody  InscriptionRequestDTO dto) {
         try {
             List<InscriptionResponseDTO> responses = inscriptionService.enrollStudent(dto);
             return ResponseEntity.status(HttpStatus.CREATED).body(responses);

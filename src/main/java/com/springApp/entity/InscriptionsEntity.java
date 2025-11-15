@@ -39,7 +39,6 @@ public class InscriptionsEntity {
     private LocalDate inscriptionDate;
 
 
-    @NotBlank
     @Enumerated(EnumType.STRING)
     @Column(name= "inscription_state", nullable = false )
     private InscriptionStates state; // ACTIVO, RETIRADO, COMPLETADO

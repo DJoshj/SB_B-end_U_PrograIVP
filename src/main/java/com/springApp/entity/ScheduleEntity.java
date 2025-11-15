@@ -28,4 +28,9 @@ public class ScheduleEntity {
 
     @OneToMany(mappedBy = "schedule")
     private List<SubjectAssignedEntity> subjectAssigns;
+
+    public ScheduleEntity(String days, String schedule) {
+        this.days = days;
+        this.schedule = schedule;
+    }
 }

@@ -97,14 +97,6 @@ public class SubjectServiceImpl implements SubjectService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<SubjectResponseDTO> searchSubjects(String search) {
-        return subjectRepository.searchSubjects(search).stream()
-                .map(subjectMapper::toDTO)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     @Transactional
     public void deleteSubject(Long id) {
         if (!subjectRepository.existsById(id)) {
