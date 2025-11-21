@@ -17,9 +17,6 @@ public class StudentMapper {
     }
 
     //entidad a dto
-    /*public StudentResponseDTO toDTO(StudentEntity student) {
-        return modelMapper.map(student, StudentResponseDTO.class);
-    }*/
     public StudentResponseDTO toDTO(StudentEntity student) {
         StudentResponseDTO dto = modelMapper.map(student, StudentResponseDTO.class);
 

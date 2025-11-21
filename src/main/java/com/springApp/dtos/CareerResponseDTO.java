@@ -14,4 +14,5 @@ public class CareerResponseDTO  {
     private String nameCareer;
     private Integer plan;
     private String faculty;
+    private String facultyCode;
 }

@@ -13,7 +13,6 @@ import com.springApp.mapper.StudentMapper;
 import com.springApp.repositories.CareerRepository;
 import com.springApp.repositories.RolRepository;
 import com.springApp.repositories.StudentRepository;
-import com.springApp.repositories.UserRepository;
 import com.springApp.services.StudentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,10 +34,83 @@ public class StudentServiceImpl implements StudentService {
     private final CareerRepository careerRepository;
     private final PasswordEncoder passwordEncoder;
 
+    // =======================================
+    // GENERAR CÓDIGO DE FACULTAD (PERSISTENTE)
+    // =======================================
+    private String generateFacultyCodeForFaculty(String faculty) {
+
+        String normalized = faculty.trim().toLowerCase();
+
+        // 1. Verificar si alguna carrera con esa facultad YA tiene código
+        List<CareerEntity> careers = careerRepository.findByFacultyIgnoreCase(faculty);
+
+        for (CareerEntity c : careers) {
+            if (c.getFacultyCode() != null) {
+                return c.getFacultyCode(); // ✔ Código existente → reutilizar
+            }
+        }
+
+        // 2. No existe código → generar uno nuevo
+        int maxCode = careerRepository.findMaxFacultyCode()
+                .orElse(15);
+
+        int newCode = maxCode + 2;
+
+        // 3. Asignar el código a todas las carreras de esa facultad
+        for (CareerEntity c : careers) {
+            c.setFacultyCode(String.valueOf(newCode));
+        }
+
+
+        careerRepository.saveAll(careers);
+
+        log.info("");
+        return String.valueOf(newCode);
+    }
+
+
+    // =======================================
+    // GENERAR CARNET DEL ESTUDIANTE
+    // =======================================
+    private String generateCarnet(CareerEntity career) {
+
+        // Obtener código basado en la FACULTAD, no en la carrera
+        String facultyCode = generateFacultyCodeForFaculty(career.getFaculty());
+
+        int year = LocalDate.now().getYear();
+
+        long correlativo = studentRepository.count() + 1;
+        String correlativoStr = String.format("%04d", correlativo);
+
+        return facultyCode + "-" + correlativoStr + "-" + year;
+    }
+
+
     @Override
     @Transactional
     public StudentResponseDTO createStudent(StudentDTO dto) {
-        log.info("Creando estudiante: {}", dto.getCarnet());
+        log.info("Creando estudiante: {}", dto.getName());
+
+        // Obtener carrera
+        CareerEntity career = null;
+        if (dto.getCareerId() != null) {
+            career = careerRepository.findById(dto.getCareerId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Carrera no encontrada"));
+        }
+
+        // ASIGNAR CÓDIGO DE FACULTAD SI ES NECESARIO
+        String facultyCode = generateFacultyCodeForFaculty(career.getFaculty());
+
+        // ACTUALIZAR LA CARRERA (solo si está vacía)
+        if (career.getFacultyCode() == null || !career.getFacultyCode().equals(facultyCode)) {
+            career.setFacultyCode(facultyCode);
+            careerRepository.save(career);
+        }
+
+        // GENERAR AUTOMÁTICAMENTE EL CARNET
+        String carnetGenerado = generateCarnet(career);
+        dto.setCarnet(carnetGenerado);
+
 
         // Validar duplicados
         if (studentRepository.existsByCarnet(dto.getCarnet())) {
@@ -48,21 +121,13 @@ public class StudentServiceImpl implements StudentService {
             throw new DuplicateResourceException("Ya existe un estudiante con el email: " + dto.getEmail());
         }
 
-
-        // Obtener carrera si se proporciona
-        CareerEntity career = null;
-        if (dto.getCareerId() != null) {
-            career = careerRepository.findById(dto.getCareerId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Carrera no encontrada"));
-        }
-
         // Crear el usuario desde el DTO
         UserEntity user= new UserEntity();
         user.setUsername(dto.getCarnet().replace("-", "")); //username sera el nombre del carnet del estudiante
         user.setPassword(passwordEncoder.encode(dto.getUser().getPassword()));
         user.setEmail(dto.getEmail());
         user.setState(UserState.ACTIVE);
-        RolEntity rol = rolRepository.findById(dto.getUser().getRoles().getRolId())
+        RolEntity rol = rolRepository.findById(3L)  //rol student
                 .orElseThrow(() -> new ResourceNotFoundException("Rol no encontrado"));
         user.setRoles(rol);
 

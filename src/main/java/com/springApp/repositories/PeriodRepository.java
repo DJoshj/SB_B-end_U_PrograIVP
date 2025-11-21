@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +17,10 @@ public interface PeriodRepository extends JpaRepository<PeriodEntity, Long> {
     Optional<PeriodEntity> findByName(String name);
 
     boolean existsByName(String name);
+
+    @Query("SELECT p FROM PeriodEntity p " +
+            "WHERE :today BETWEEN p.startDate AND p.endDate")
+    Optional<PeriodEntity> findCurrentPeriods(@Param("today") LocalDate today);
 
     @Query("SELECT p FROM PeriodEntity p WHERE " +
             "CURRENT_DATE BETWEEN p.startDate AND p.endDate")

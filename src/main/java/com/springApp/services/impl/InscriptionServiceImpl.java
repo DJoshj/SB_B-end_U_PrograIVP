@@ -10,7 +10,6 @@ import com.springApp.entity.states.InscriptionStates;
 import com.springApp.exception.BusinessException;
 import com.springApp.exception.DuplicateResourceException;
 import com.springApp.exception.ResourceNotFoundException;
-import com.springApp.mapper.InscriptionResponseMapper;
 import com.springApp.repositories.InscriptionRepository;
 import com.springApp.repositories.PeriodRepository;
 import com.springApp.repositories.StudentRepository;
@@ -32,7 +31,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class InscriptionServiceImpl implements InscriptionService {
-    private InscriptionResponseMapper inscriptionMapper;
     private final InscriptionRepository inscriptionRepository;
     private final StudentRepository studentRepository;
     private final SubjectAssignedRepository subjectAssignedRepository;
@@ -51,9 +49,17 @@ public class InscriptionServiceImpl implements InscriptionService {
                         "Estudiante no encontrado con ID: " + dto.getStudentId()));
 
         //  Validar que el periodo existe
+        /* 2. Obtener fecha actual y el periodo activo automáticamente
+        LocalDate today = LocalDate.now();
+        PeriodEntity period = periodRepository.findCurrentPeriods(today)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "No existe un periodo académico activo en la fecha actual: " + today
+                ));*/
         PeriodEntity period = periodRepository.findById(dto.getPeriodId())
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Periodo no encontrado con ID: " + dto.getPeriodId()));
+
+
 
         // 2️. Crear una lista para devolver las inscripciones realizadas
         List<InscriptionResponseDTO> responses = new ArrayList<>();
@@ -93,55 +99,7 @@ public class InscriptionServiceImpl implements InscriptionService {
         return responses;
     }
 
-    private InscriptionResponseDTO mapToResponseDTO(InscriptionsEntity entity) {
-        InscriptionResponseDTO dto = new InscriptionResponseDTO();
 
-        // Información de la inscripción
-        dto.setInscriptionId(entity.getInscriptionId());
-        dto.setInscriptionDate(entity.getInscriptionDate().toString());
-        dto.setState(entity.getState().name());
-
-        // Información del estudiante
-        dto.setStudentId(entity.getStudent().getStudentId());
-        dto.setStudentName(entity.getStudent().getName() + " " + entity.getStudent().getLastname());
-        dto.setStudentCarnet(entity.getStudent().getCarnet());
-        dto.setStudentEmail(entity.getStudent().getEmail());
-
-        // Información de la materia asignada
-        dto.setSubjectAssignedId(entity.getSubjectAssigned().getIdSubjectAssigned());
-        dto.setSubjectId(entity.getSubjectAssigned().getSubject().getSubjectId());
-        dto.setSubjectCode(entity.getSubjectAssigned().getSubject().getSubjectCode());
-        dto.setSubjectName(entity.getSubjectAssigned().getSubject().getName());
-        dto.setValueUnits(entity.getSubjectAssigned().getSubject().getValueUnits());
-        dto.setSection(entity.getSubjectAssigned().getSection());
-
-        // Información del docente
-        dto.setTeacherId(entity.getSubjectAssigned().getTeacher().getTeacherId());
-        dto.setTeacherName(entity.getSubjectAssigned().getTeacher().getNames() + " " +
-                entity.getSubjectAssigned().getTeacher().getLastName());
-        dto.setTeacherCode(entity.getSubjectAssigned().getTeacher().getTeacherCode());
-
-        // Información de horario
-        dto.setScheduleId(entity.getSubjectAssigned().getSchedule().getScheduleId());
-        dto.setScheduleDays(entity.getSubjectAssigned().getSchedule().getDays());
-        dto.setScheduleTime(entity.getSubjectAssigned().getSchedule().getSchedule());
-
-        // Información de aula
-        dto.setClassroomId(entity.getSubjectAssigned().getClassroom().getClassroomId());
-        dto.setClassroomName(entity.getSubjectAssigned().getClassroom().getName());
-        dto.setBuilding(entity.getSubjectAssigned().getClassroom().getBuilding());
-
-        // Información del periodo
-        dto.setPeriodId(entity.getPeriod().getPeriodId());
-        dto.setPeriodName(entity.getPeriod().getName());
-        dto.setPeriodYear(entity.getPeriod().getYear());
-
-        // Información de cupos
-        dto.setAvailableSpace(entity.getSubjectAssigned().getAvailableSpace());
-        dto.setMaximumCapacity(entity.getSubjectAssigned().getMaximumCapacity());
-
-        return dto;
-    }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public InscriptionResponseDTO enrollSingleSubject(StudentEntity student, PeriodEntity period, Long subjectAssignedId) {
@@ -149,6 +107,14 @@ public class InscriptionServiceImpl implements InscriptionService {
         SubjectAssignedEntity subjectAssigned = subjectAssignedRepository.findById(subjectAssignedId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Materia asignada no encontrada con ID: " + subjectAssignedId));
+
+        // Validar que el estudiante ya esté inscrito
+        if (inscriptionRepository.existsActiveInscription(student.getStudentId(), subjectAssignedId)) {
+            throw new BusinessException(
+                    "El estudiante ya está inscrito en esta materia: "
+                            + subjectAssigned.getSubject().getName()
+            );
+        }
 
         // 5. Validar que el estudiante no esté ya inscrito
         if (inscriptionRepository.existsActiveInscription(student.getStudentId(), subjectAssignedId)) {
@@ -262,7 +228,7 @@ public class InscriptionServiceImpl implements InscriptionService {
                 inscriptionRepository.findByStudentAndPeriod(studentId, periodId);
 
         return inscriptions.stream()
-                .map(inscriptionMapper::toDTO)
+                .map(this::mapToResponseDTO)
                 .collect(Collectors.toList());
     }
 
@@ -275,7 +241,7 @@ public class InscriptionServiceImpl implements InscriptionService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Inscripción no encontrada con ID: " + inscriptionId));
 
-        return inscriptionMapper.toDTO(inscription);
+        return mapToResponseDTO(inscription);
     }
 
     /*Devuelve el número de materias en las que el estudiante está actualmente inscrito (activas) en un periodo específico.*/
@@ -341,5 +307,55 @@ public class InscriptionServiceImpl implements InscriptionService {
             log.error("Error al verificar si puede inscribirse: {}", e.getMessage());
             return false;
         }
+    }
+
+    private InscriptionResponseDTO mapToResponseDTO(InscriptionsEntity entity) {
+        InscriptionResponseDTO dto = new InscriptionResponseDTO();
+
+        // Información de la inscripción
+        dto.setInscriptionId(entity.getInscriptionId());
+        dto.setInscriptionDate(entity.getInscriptionDate().toString());
+        dto.setState(entity.getState().name());
+
+        // Información del estudiante
+        dto.setStudentId(entity.getStudent().getStudentId());
+        dto.setStudentName(entity.getStudent().getName() + " " + entity.getStudent().getLastname());
+        dto.setStudentCarnet(entity.getStudent().getCarnet());
+        dto.setStudentEmail(entity.getStudent().getEmail());
+
+        // Información de la materia asignada
+        dto.setSubjectAssignedId(entity.getSubjectAssigned().getIdSubjectAssigned());
+        dto.setSubjectId(entity.getSubjectAssigned().getSubject().getSubjectId());
+        dto.setSubjectCode(entity.getSubjectAssigned().getSubject().getSubjectCode());
+        dto.setSubjectName(entity.getSubjectAssigned().getSubject().getName());
+        dto.setValueUnits(entity.getSubjectAssigned().getSubject().getValueUnits());
+        dto.setSection(entity.getSubjectAssigned().getSection());
+
+        // Información del docente
+        dto.setTeacherId(entity.getSubjectAssigned().getTeacher().getTeacherId());
+        dto.setTeacherName(entity.getSubjectAssigned().getTeacher().getNames() + " " +
+                entity.getSubjectAssigned().getTeacher().getLastName());
+        dto.setTeacherCode(entity.getSubjectAssigned().getTeacher().getTeacherCode());
+
+        // Información de horario
+        dto.setScheduleId(entity.getSubjectAssigned().getSchedule().getScheduleId());
+        dto.setScheduleDays(entity.getSubjectAssigned().getSchedule().getDays());
+        dto.setScheduleTime(entity.getSubjectAssigned().getSchedule().getSchedule());
+
+        // Información de aula
+        dto.setClassroomId(entity.getSubjectAssigned().getClassroom().getClassroomId());
+        dto.setClassroomName(entity.getSubjectAssigned().getClassroom().getName());
+        dto.setBuilding(entity.getSubjectAssigned().getClassroom().getBuilding());
+
+        // Información del periodo
+        dto.setPeriodId(entity.getPeriod().getPeriodId());
+        dto.setPeriodName(entity.getPeriod().getName());
+        dto.setPeriodYear(entity.getPeriod().getYear());
+
+        // Información de cupos
+        dto.setAvailableSpace(entity.getSubjectAssigned().getAvailableSpace());
+        dto.setMaximumCapacity(entity.getSubjectAssigned().getMaximumCapacity());
+
+        return dto;
     }
 }

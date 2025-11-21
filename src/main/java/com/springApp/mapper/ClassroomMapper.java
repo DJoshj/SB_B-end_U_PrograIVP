@@ -1,9 +1,7 @@
 package com.springApp.mapper;
 
 import com.springApp.dtos.ClassroomResponseDTO;
-import com.springApp.dtos.PeriodResponseDTO;
 import com.springApp.entity.ClassroomEntity;
-import com.springApp.entity.PeriodEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

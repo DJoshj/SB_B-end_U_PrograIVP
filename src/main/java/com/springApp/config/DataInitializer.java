@@ -111,19 +111,19 @@ public class DataInitializer implements CommandLineRunner {
         if (careerRepository.count() == 0) {
             logger.info("🔄 Creating  Careers...");
 
-            careerRepository.save( new CareerEntity("Ingeniería en Sistemas", 2022, "Ingeniería y Arquitectura"));//25
-            careerRepository.save( new CareerEntity("Ingeniería Electrica",2022,  "Ingeniería y Arquitectura"));
-            careerRepository.save( new CareerEntity("Ingeniería Informatica",2022,  "Ingeniería y Arquitectura"));
-            careerRepository.save( new CareerEntity("Ingeniería Industrial",2022,  "Ingeniería y Arquitectura"));
-            careerRepository.save( new CareerEntity("Ingeniería Electronica",2022,  "Ingeniería y Arquitectura"));
-            careerRepository.save( new CareerEntity("Ingeniería Mecanica",2022,  "Ingeniería y Arquitectura"));
-            careerRepository.save( new CareerEntity("Arquitectura",2023, "Ingeniería y Arquitectura"));
-            careerRepository.save( new CareerEntity("Administración de Empresas",2020, "Ciencias Económicas")); //17
-            careerRepository.save( new CareerEntity("Ciencias de la Comunicación",2020, "Ciencias Económicas"));
-            careerRepository.save( new CareerEntity("Contaduría Pública",2021, "Ciencias Económicas"));
-            careerRepository.save( new CareerEntity("Derecho",2021, "Ciencias Jurídicas"));      //19
-            careerRepository.save( new CareerEntity("Diseño Gráfico",2021, "Artes y Diseño"));  //21
-            careerRepository.save( new CareerEntity("Psicología",2023, "Humanidades"));  //23
+            careerRepository.save( new CareerEntity("Ingeniería en Sistemas", 2022, "Ingeniería y Arquitectura", "15"));//15
+            careerRepository.save( new CareerEntity("Ingeniería Electrica",2022,  "Ingeniería y Arquitectura", "15"));
+            careerRepository.save( new CareerEntity("Ingeniería Informatica",2022,  "Ingeniería y Arquitectura", "15"));
+            careerRepository.save( new CareerEntity("Ingeniería Industrial",2022,  "Ingeniería y Arquitectura", "15"));
+            careerRepository.save( new CareerEntity("Ingeniería Electronica",2022,  "Ingeniería y Arquitectura", "15"));
+            careerRepository.save( new CareerEntity("Ingeniería Mecanica",2022,  "Ingeniería y Arquitectura", "15"));
+            careerRepository.save( new CareerEntity("Arquitectura",2023, "Ingeniería y Arquitectura", "17"));   //17
+            careerRepository.save( new CareerEntity("Administración de Empresas",2020, "Ciencias Económicas", "19")); //19
+            careerRepository.save( new CareerEntity("Ciencias de la Comunicación",2020, "Ciencias Económicas", "19"));
+            careerRepository.save( new CareerEntity("Contaduría Pública",2021, "Ciencias Económicas", "19"));
+            careerRepository.save( new CareerEntity("Derecho",2021, "Ciencias Jurídicas", "21"));      //21
+            careerRepository.save( new CareerEntity("Diseño Gráfico",2021, "Artes y Diseño", "23"));  //23
+            careerRepository.save( new CareerEntity("Psicología",2023, "Humanidades", "25"));  //25
 
             logger.info("✅ Careers Created Successfully::::Mysql");
             logger.info("📊 Total Career: " + careerRepository.count());

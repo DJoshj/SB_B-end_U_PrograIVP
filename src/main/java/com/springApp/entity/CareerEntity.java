@@ -28,6 +28,10 @@ public class CareerEntity {
     @Column(nullable = false, length = 100)
     private String faculty;
 
+    @Column(name = "faculty_code", length = 10)
+    private String facultyCode;
+
+
     //mappedBy = "carrera" es el nombre del atributo de la otra clase de la relación
     @OneToMany(mappedBy = "career")
     private List<StudentEntity> student;
@@ -35,15 +39,18 @@ public class CareerEntity {
     @OneToMany(mappedBy = "career")
     private List<SubjectEntity> subject;
 
+    public CareerEntity(String nameCareer, Integer plan, String faculty, String facultyCode) {
+        this.nameCareer = nameCareer;
+        this.plan = plan;
+        this.faculty = faculty;
+        this.facultyCode = facultyCode;
+    }
+
     public CareerEntity(String nameCareer, Integer plan, String faculty) {
         this.nameCareer = nameCareer;
         this.plan = plan;
         this.faculty = faculty;
     }
 
-    public CareerEntity(Long careerId, String nameCareer, String faculty) {
-        this.careerId = careerId;
-        this.nameCareer = nameCareer;
-        this.faculty = faculty;
-    }
+
 }
