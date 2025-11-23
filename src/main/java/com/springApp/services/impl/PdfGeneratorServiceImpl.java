@@ -25,7 +25,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Slf4j
 @Service
@@ -125,7 +127,7 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
             logo.setWidth(80);
             headerTable.addCell(new Cell().add(logo).setBorder(Border.NO_BORDER));
 
-            // Si no tienes logo, deja la celda vacía
+            // Si no hay logo, deja la celda vacía
             //headerTable.addCell(new Cell().setBorder(Border.NO_BORDER));
         } catch (Exception e) {
             log.warn("No se pudo cargar el logo");
@@ -192,14 +194,14 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
     }
     private void addInscriptionInfo(Document document, InscriptionReportDTO reportData,
                                     PdfFont bold, PdfFont regular) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy h:mma");
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy h:mma", Locale.US);
 
         Paragraph inscriptionInfo = new Paragraph()
                 .add(new Text("Clave de inscripción: ").setFont(bold).setFontSize(9))
                 .add(new Text(reportData.getInscriptionKey() + ", ").setFont(regular).setFontSize(9))
                 .add(new Text("Fecha de inscripción: ").setFont(bold).setFontSize(9))
-                .add(new Text(reportData.getInscriptionDate().atStartOfDay().format(formatter))
-                        .setFont(regular).setFontSize(9))
+                .add(new Text(now.format(formatter)).setFont(regular).setFontSize(9))
                 .setTextAlignment(TextAlignment.CENTER);
 
         document.add(inscriptionInfo);

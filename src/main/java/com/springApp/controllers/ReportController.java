@@ -18,7 +18,7 @@ import java.nio.file.Paths;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/reports")
+@RequestMapping("/reports")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "*")
 public class ReportController {
@@ -67,9 +67,9 @@ public class ReportController {
      * Re-genera y re-envía un reporte de inscripción
      */
     @PostMapping("/resend/{inscriptionId}")
-    public ResponseEntity<?> resendReport(@PathVariable Integer inscriptionId) {
+    public ResponseEntity<?> resendReport(@PathVariable Integer studentId) {
         try {
-            // Aquí puedes llamar al servicio para regenerar y reenviar
+            // Aquí se hará llamar al servicio para regenerar y reenviar
             // inscriptionReportService.generateAndSendReport(inscriptionId);
 
             return ResponseEntity.ok().body("Reporte reenviado exitosamente");

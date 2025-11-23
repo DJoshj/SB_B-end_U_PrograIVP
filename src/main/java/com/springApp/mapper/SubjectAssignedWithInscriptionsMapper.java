@@ -4,13 +4,9 @@ import com.springApp.dtos.InscriptionSummaryDTO;
 import com.springApp.dtos.SubjectAssignedWithInscriptionsDTO;
 import com.springApp.entity.InscriptionsEntity;
 import com.springApp.entity.SubjectAssignedEntity;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class SubjectAssignedWithInscriptionsMapper {

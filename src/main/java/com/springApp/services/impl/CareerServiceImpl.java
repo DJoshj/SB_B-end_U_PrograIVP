@@ -32,7 +32,9 @@ public class CareerServiceImpl implements CareerService {
 
         CareerEntity career = new CareerEntity();
         career.setNameCareer(dto.getNameCareer());
+        career.setPlan(dto.getPlan());
         career.setFaculty(dto.getFaculty());
+        career.setFacultyCode(dto.getFacultyCode());
 
         CareerEntity saved = careerRepository.save(career);
 
@@ -46,7 +48,9 @@ public class CareerServiceImpl implements CareerService {
                 .orElseThrow(() -> new ResourceNotFoundException("Carrera no encontrada"));
 
         career.setNameCareer(dto.getNameCareer());
+        career.setPlan(dto.getPlan());
         career.setFaculty(dto.getFaculty());
+        career.setFacultyCode(dto.getFacultyCode());
 
         CareerEntity saved = careerRepository.save(career);
 

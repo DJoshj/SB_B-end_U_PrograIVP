@@ -1,8 +1,6 @@
 package com.springApp.mapper;
 
-import com.springApp.dtos.StudentResponseDTO;
 import com.springApp.dtos.SubjectResponseDTO;
-import com.springApp.entity.StudentEntity;
 import com.springApp.entity.SubjectEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

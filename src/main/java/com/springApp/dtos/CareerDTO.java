@@ -1,5 +1,6 @@
 package com.springApp.dtos;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,5 +19,8 @@ public class CareerDTO {
 
     @NotBlank(message = "La facultad es requerida")
     private String faculty;
+
+    @Column(name = "faculty_code", length = 10)
+    private String facultyCode;
 }
 

@@ -2,8 +2,6 @@ package com.springApp.mapper;
 
 import com.springApp.dtos.SubjectAssignedResponseDTO;
 import com.springApp.entity.SubjectAssignedEntity;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component

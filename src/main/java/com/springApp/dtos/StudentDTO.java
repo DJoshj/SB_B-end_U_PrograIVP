@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class StudentDTO {
     private UserDTO user;
 
-    @NotBlank(message = "El carnet es requerido")
+    /*@NotBlank(message = "El carnet es requerido")*/
     @Size(max = 25)
     private String carnet;
 

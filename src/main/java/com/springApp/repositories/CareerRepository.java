@@ -11,6 +11,11 @@ import java.util.Optional;
 
 @Repository
 public interface CareerRepository extends JpaRepository<CareerEntity, Long> {
+    List<CareerEntity> findByFacultyIgnoreCase(String faculty);
+
+    @Query("SELECT MAX(CAST(c.facultyCode AS integer)) FROM CareerEntity c")
+    Optional<Integer> findMaxFacultyCode();
+
     Optional<CareerEntity> findByNameCareer(String nameCareer);
 
     List<CareerEntity> findByFaculty(String faculty);
