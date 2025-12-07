@@ -174,6 +174,18 @@ public class SubjectAssignedServiceImpl implements SubjectAssignedService {
                     "El aula ya está ocupada en este horario para este periodo");
         }
 
+        // Validar conflicto de aula, horario, periodo y sección (excluyendo la asignación actual)
+        if (subjectAssignedRepository.existsClassroomScheduleSectionConflictExcludingSelf(
+                dto.getClassroomId(),
+                dto.getScheduleId(),
+                dto.getPeriodId(),
+                dto.getSection(),
+                id
+        )) {
+            throw new BusinessException(
+                    "Ya existe una materia asignada con la misma aula, horario, periodo y sección.");
+        }
+
         // Contar estudiantes inscritos actualmente
         Long enrolledCount = inscriptionRepository.countActiveInscriptionsBySubjectAssigned(id);
 

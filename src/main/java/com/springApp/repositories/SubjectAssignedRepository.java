@@ -115,6 +115,21 @@ public interface SubjectAssignedRepository extends JpaRepository<SubjectAssigned
     @Query("SELECT sa FROM SubjectAssignedEntity sa WHERE sa.availableSpace = 0")
     List<SubjectAssignedEntity> findFullSubjects();
 
+    // Verificar conflicto de aula, horario, periodo y sección, excluyendo la asignación actual
+    @Query("SELECT COUNT(sa) > 0 FROM SubjectAssignedEntity sa WHERE " +
+            "sa.classroom.classroomId = :classroomId AND " +
+            "sa.schedule.scheduleId = :scheduleId AND " +
+            "sa.period.periodId = :periodId AND " +
+            "sa.section = :section AND " +
+            "sa.idSubjectAssigned <> :currentSubjectAssignedId")
+    boolean existsClassroomScheduleSectionConflictExcludingSelf(
+            @Param("classroomId") Long classroomId,
+            @Param("scheduleId") Long scheduleId,
+            @Param("periodId") Long periodId,
+            @Param("section") String section,
+            @Param("currentSubjectAssignedId") Long currentSubjectAssignedId
+    );
+
 
 
 
